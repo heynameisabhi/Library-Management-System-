@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Books</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">Library Management</div>
+    <div class="nav-links">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="books.html"><i class="fas fa-book"></i> Books</a>
+      <a href="add-book.html"><i class="fas fa-plus"></i> Add Book</a>
+      <a href="search.html" class="active"><i class="fas fa-search"></i> Search</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1><i class="fas fa-search"></i> Search Books</h1>
+    </div>
+
+    <div class="search-container">
+      <div class="search-box">
+        <div class="search-input-group">
+          <input type="text" id="searchInput" class="form-control" 
+                 placeholder="Search by title, author, or ISBN..." 
+                 autocomplete="off">
+          <button class="btn btn-primary" onclick="searchBooks()">
+            <i class="fas fa-search"></i> Search
+          </button>
+        </div>
+        <div class="search-filters">
+          <label class="filter-label">
+            <input type="checkbox" id="searchTitle" checked> Title
+          </label>
+          <label class="filter-label">
+            <input type="checkbox" id="searchAuthor" checked> Author
+          </label>
+          <label class="filter-label">
+            <input type="checkbox" id="searchISBN" checked> ISBN
+          </label>
+        </div>
+      </div>
+
+      <div id="searchResults" class="search-results">
+        <div class="initial-state">
+          <i class="fas fa-search"></i>
+          <p>Enter your search terms above to find books</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  
+</body>
+</html>

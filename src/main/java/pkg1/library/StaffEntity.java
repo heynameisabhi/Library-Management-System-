@@ -21,7 +21,7 @@ public class StaffEntity {
 	@Column(name="Role",nullable=false)
 	private String role;
 	
-	@Column(name="ContactInformation",length=100)
+	@Column(name="ContactInformation",length=10)
 	private String contactinformation;
 
 	public StaffEntity() {
