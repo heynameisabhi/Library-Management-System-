@@ -24,7 +24,7 @@ public class MemberEntity {
 	private String address;
 	
 	@Column(name="PhoneNumber",length=10)
-	private int phoneNumber;
+	private Long phoneNumber;
 	
 	@Column(name="Email",unique = true)
 	private String email;
@@ -45,7 +45,7 @@ public class MemberEntity {
 	
 	
 
-	public MemberEntity(int memberid, String name, String address, int phoneNumber, String email,
+	public MemberEntity(int memberid, String name, String address, Long phoneNumber, String email,
 			MembershipType membershipType) {
 		super();
 		this.memberid = memberid;
@@ -82,11 +82,11 @@ public class MemberEntity {
 		this.address = address;
 	}
 
-	public int getPhoneNumber() {
+	public Long getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(Long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 

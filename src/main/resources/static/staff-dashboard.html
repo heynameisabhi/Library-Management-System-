@@ -2,54 +2,168 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Staff Panel • jnanaTattva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Staff Dashboard • JnanaTattva</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen text-white p-6">
+<body class="bg-gray-100 min-h-screen flex">
 
-  <header class="mb-8">
-    <h1 class="text-4xl font-bold">Welcome to Staff Panel</h1>
-    <p class="mt-2 text-lg">Manage classes, assignments, attendance, and more!</p>
-  </header>
+  <!-- Sidebar -->
+  <aside class="w-64 bg-indigo-800 text-white p-4 space-y-6 flex flex-col">
+    <h1 class="text-2xl font-bold">Staff Dashboard</h1>
+	<nav class="flex flex-col space-y-2">
+	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('bookManagement', this)">📚 Book Management</button>
+	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('memberManagement', this)">👥 Member Management</button>
+	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('issuedBooks', this)">📖 Issued Books</button>
+	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('reports', this)">📊 Reports</button>
+	</nav>
+    <button onclick="logout()" class="mt-auto bg-red-500 hover:bg-red-600 p-2 rounded">🚪 Logout</button>
+  </aside>
 
-  <main class="space-y-6 max-w-4xl mx-auto">
+  <!-- Main Content -->
+  <main class="flex-1 p-6">
+    <!-- Book Management Section -->
+    <section id="bookManagement" class="section">
+      <h2 class="text-2xl font-semibold mb-4">📚 Book Management</h2>
+      <div class="bg-white p-4 rounded shadow">
+        <form id="addBookForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input type="text" id="title" placeholder="Book Title" required class="p-2 border rounded" />
+          <input type="text" id="author" placeholder="Author" required class="p-2 border rounded" />
+          <input type="text" id="isbn" placeholder="ISBN" required class="p-2 border rounded" />
+          <input type="text" id="category" placeholder="Category" required class="p-2 border rounded" />
+          <button type="submit" class="col-span-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">Add Book</button>
+        </form>
 
-    <section class="bg-white bg-opacity-10 rounded-xl p-6 shadow-lg">
-      <h2 class="text-2xl font-semibold mb-4">Manage Classes</h2>
-      <button class="px-4 py-2 bg-pink-600 rounded-full hover:bg-pink-500 transition">
-        Add New Class
-      </button>
+        <input type="text" id="searchBar" placeholder="Search Books..." class="mb-4 p-2 border rounded w-full" />
+        <table class="w-full table-auto border-collapse bg-white">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="p-2 border">Title</th>
+              <th class="p-2 border">Author</th>
+              <th class="p-2 border">ISBN</th>
+              <th class="p-2 border">Category</th>
+              <th class="p-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="bookTableBody">
+            <!-- Books will be dynamically inserted here -->
+          </tbody>
+        </table>
+      </div>
     </section>
 
-    <section class="bg-white bg-opacity-10 rounded-xl p-6 shadow-lg">
-      <h2 class="text-2xl font-semibold mb-4">Attendance</h2>
-      <button class="px-4 py-2 bg-pink-600 rounded-full hover:bg-pink-500 transition">
-        Mark Attendance
-      </button>
+	<!-- Member Management -->
+	<section id="memberManagement" class="section hidden">
+	  <h2 class="text-2xl font-semibold mb-4">👥 Member Management</h2>
+
+	  <!-- Add Member Form -->
+	  <form id="addMemberForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+	    <input type="text" id="name" placeholder="Name" required class="p-2 border rounded" />
+	    <input type="text" id="address" placeholder="Address" required class="p-2 border rounded" />
+	    <input type="tel" id="phoneNumber" placeholder="Phone Number" maxlength="10" required class="p-2 border rounded" />
+	    <input type="email" id="email" placeholder="Email" required class="p-2 border rounded" />
+	    <select id="membershipType" required class="p-2 border rounded">
+	      <option value="">Select Membership Type</option>
+	      <option value="REGULAR">Regular</option>
+	      <option value="PREMIUM">Premium</option>
+	      <option value="STUDENT">Student</option>
+	    </select>
+	    <button type="submit" class="col-span-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">Add Member</button>
+	  </form>
+
+	  <!-- Member Table -->
+	  <table class="w-full table-auto border-collapse bg-white">
+	    <thead>
+	      <tr class="bg-gray-200">
+	        <th class="p-2 border">Name</th>
+	        <th class="p-2 border">Address</th>
+	        <th class="p-2 border">Phone</th>
+	        <th class="p-2 border">Email</th>
+	        <th class="p-2 border">Type</th>
+	        <th class="p-2 border">Actions</th>
+	      </tr>
+	    </thead>
+	    <tbody id="memberTableBody">
+	      <!-- Rows will be dynamically inserted here -->
+	    </tbody>
+	  </table>
+	</section>
+
+    <!-- Issued Books Placeholder -->
+    <section id="issuedBooks" class="section hidden">
+      <h2 class="text-2xl font-semibold mb-4">📖 Issued Books</h2>
+      <p class="text-gray-600">Coming soon...</p>
     </section>
 
-    <section class="bg-white bg-opacity-10 rounded-xl p-6 shadow-lg">
-      <h2 class="text-2xl font-semibold mb-4">Assignments</h2>
-      <button class="px-4 py-2 bg-pink-600 rounded-full hover:bg-pink-500 transition">
-        Create Assignment
-      </button>
+    <!-- Reports Placeholder -->
+    <section id="reports" class="section hidden">
+      <h2 class="text-2xl font-semibold mb-4">📊 Reports</h2>
+      <p class="text-gray-600">Coming soon...</p>
     </section>
-
-    <button 
-      onclick="logout()" 
-      class="mt-8 px-6 py-3 bg-pink-600 rounded-full font-semibold hover:bg-pink-500 transition"
-    >
-      Log Out
-    </button>
   </main>
 
+  <!-- Script for navigation -->
   <script>
-    function logout() {
-      window.location.href = 'login.html';
+    function showSection(sectionId, clickedBtn) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.getElementById(sectionId).classList.remove('hidden');
+
+      // Remove active styles from all nav buttons
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.remove('bg-indigo-900', 'font-semibold');
+      });
+
+      // Add active styles to the clicked button
+      clickedBtn.classList.add('bg-indigo-900', 'font-semibold');
     }
+
+    function logout() {
+      window.location.href = "login.html";
+    }
+
+    // Show default section on load
+    window.onload = () => {
+      const defaultBtn = document.querySelector('.nav-link');
+      if (defaultBtn) defaultBtn.click();
+    };
   </script>
- <script type="module" src="js/login.js"></script>
+
+  <script type="module" src="js/staff-books.js"></script>
+  <script type="module">
+    import { setupMemberManagement } from 'js/staff-members.js';
+
+    window.onload = () => {
+      const sectionId = localStorage.getItem('activeSection') || 'bookManagement';
+      const buttonToClick = [...document.querySelectorAll('.nav-link')]
+        .find(btn => btn.getAttribute('onclick').includes(sectionId));
+      if (buttonToClick) buttonToClick.click();
+    };
+
+    window.showSection = (sectionId, clickedBtn) => {
+      document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-link').forEach(btn => {
+        btn.classList.remove('bg-indigo-900', 'font-semibold');
+      });
+      clickedBtn.classList.add('bg-indigo-900', 'font-semibold');
+
+      localStorage.setItem('activeSection', sectionId);
+
+      // Initialize script only if not yet loaded
+      if (sectionId === 'memberManagement' && !window.memberSetupDone) {
+        setupMemberManagement();
+        window.memberSetupDone = true;
+      }
+    };
+
+    window.logout = () => {
+      window.location.href = "login.html";
+    };
+  </script>
 
 </body>
 </html>

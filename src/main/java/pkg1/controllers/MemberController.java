@@ -15,38 +15,40 @@ import org.springframework.web.bind.annotation.RestController;
 
 import pkg1.library.MemberEntity;
 import pkg1.services.MemberService;
-
 @RestController
 @RequestMapping("/member")
 public class MemberController {
-	
-	@Autowired
-	private MemberService memberService;
-	
-	@GetMapping
-	public List<MemberEntity> getAllMembers(@PathVariable int id){
-		return memberService.getAllMembers();
-	}
-	
-	@GetMapping("/{id}")
-	public Optional<MemberEntity> getMemberById(@PathVariable int id){
-		return memberService.getMemberById(id);
-	}
-	
-	@PostMapping
-	public MemberEntity addMember(@PathVariable  int id,@RequestBody MemberEntity member) {
-	    return memberService.addMember(id,member);
-	}
+    
+    @Autowired
+    private MemberService memberService;
 
-	
-	@PutMapping("/{id}")
-	public MemberEntity UpdateMember(@PathVariable int id,@RequestBody MemberEntity member) {
-		return memberService.UpdateMember(id,member);
-	}
-	
-	@DeleteMapping("/{id}")
-	public void DeleteMember(@PathVariable int id) {
-		memberService.DeleteMember(id);
-	}
+   
+    @GetMapping
+    public List<MemberEntity> getAllMembers() {
+        return memberService.getAllMembers();
+    }
 
+   
+    @GetMapping("/{id}")
+    public Optional<MemberEntity> getMemberById(@PathVariable int id) {
+        return memberService.getMemberById(id);
+    }
+
+   
+    @PostMapping
+    public MemberEntity addMember(@RequestBody MemberEntity member) {
+        return memberService.addMember(member);
+    }
+
+   
+    @PutMapping("/{id}")
+    public MemberEntity updateMember(@PathVariable int id, @RequestBody MemberEntity member) {
+        return memberService.updateMember(id, member);
+    }
+
+    
+    @DeleteMapping("/{id}")
+    public void deleteMember(@PathVariable int id) {
+        memberService.deleteMember(id);
+    }
 }
