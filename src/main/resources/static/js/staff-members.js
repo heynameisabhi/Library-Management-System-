@@ -46,7 +46,7 @@ export function setupMemberManagement() {
       email: memberForm.email.value.trim(),
       membershipType: memberForm.membershipType.value
     };
-
+  console.log('new Member to be added', newMember)
     if (!Object.values(newMember).every(v => v)) {
       alert('Please fill all the fields.');
       return;
@@ -54,7 +54,7 @@ export function setupMemberManagement() {
 
     const method = editingMemberId ? 'PUT' : 'POST';
     const url = editingMemberId ? `${apiUrl}/${editingMemberId}` : apiUrl;
-
+	console.log('apiUrl to be added', apiUrl)
     fetch(url, {
       method,
       headers: { 'Content-Type': 'application/json' },

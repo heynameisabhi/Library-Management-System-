@@ -24,11 +24,11 @@
 
       <div class="bg-white p-4 rounded shadow">
         <form id="addMemberForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <input type="text" id="name" placeholder="Name" required class="p-2 border rounded" />
-          <input type="text" id="address" placeholder="Address" required class="p-2 border rounded" />
-          <input type="text" id="phoneNumber" placeholder="Phone Number" required class="p-2 border rounded" />
-          <input type="email" id="email" placeholder="Email" required class="p-2 border rounded" />
-          <select id="membershipType" class="p-2 border rounded" required>
+          <input type="text" name="name" id="name" placeholder="Name" required class="p-2 border rounded" />
+          <input type="text" name="address" id="address" placeholder="Address" required class="p-2 border rounded" />
+          <input type="text" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" required class="p-2 border rounded" />
+          <input type="email" name="email" id="email" placeholder="Email" required class="p-2 border rounded" />
+          <select name="membershipType" id="membershipType" class="p-2 border rounded" required>
             <option value="">Select Membership Type</option>
             <option value="REGULAR">Regular</option>
             <option value="PREMIUM">Premium</option>
@@ -50,7 +50,7 @@
               <th class="p-2 border">Actions</th>
             </tr>
           </thead>
-          <tbody id="memberTableBody">
+          <tbody id="memberTableBody"name="memberTableBody">
             <!-- Members will be dynamically inserted here -->
           </tbody>
         </table>
@@ -65,6 +65,6 @@
   </script>
 
   <!-- Removed window.onload logic -->
-  <script type="module" src="js/staff-members.js"></script>
+  <script type="module" src="./js/staff-members.js"></script>
 </body>
 </html>

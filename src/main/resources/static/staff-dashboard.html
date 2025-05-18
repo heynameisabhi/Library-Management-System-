@@ -58,11 +58,11 @@
 
 	  <!-- Add Member Form -->
 	  <form id="addMemberForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-	    <input type="text" id="name" placeholder="Name" required class="p-2 border rounded" />
-	    <input type="text" id="address" placeholder="Address" required class="p-2 border rounded" />
-	    <input type="tel" id="phoneNumber" placeholder="Phone Number" maxlength="10" required class="p-2 border rounded" />
-	    <input type="email" id="email" placeholder="Email" required class="p-2 border rounded" />
-	    <select id="membershipType" required class="p-2 border rounded">
+	    <input type="text" name="name" id="name" placeholder="Name" required class="p-2 border rounded" />
+	    <input type="text" name="address" id="address" placeholder="Address" required class="p-2 border rounded" />
+	    <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" maxlength="10" required class="p-2 border rounded" />
+	    <input type="email" name="email" id="email" placeholder="Email" required class="p-2 border rounded" />
+	    <select name="membershipType" id="membershipType" required class="p-2 border rounded">
 	      <option value="">Select Membership Type</option>
 	      <option value="REGULAR">Regular</option>
 	      <option value="PREMIUM">Premium</option>
@@ -83,20 +83,20 @@
 	        <th class="p-2 border">Actions</th>
 	      </tr>
 	    </thead>
-	    <tbody id="memberTableBody">
+	    <tbody name="memberTableBody" id="memberTableBody">
 	      <!-- Rows will be dynamically inserted here -->
 	    </tbody>
 	  </table>
 	</section>
 
     <!-- Issued Books Placeholder -->
-    <section id="issuedBooks" class="section hidden">
+    <section name="issueBook" id="issuedBooks" class="section hidden">
       <h2 class="text-2xl font-semibold mb-4">📖 Issued Books</h2>
       <p class="text-gray-600">Coming soon...</p>
     </section>
 
     <!-- Reports Placeholder -->
-    <section id="reports" class="section hidden">
+    <section name="report" id="reports" class="section hidden">
       <h2 class="text-2xl font-semibold mb-4">📊 Reports</h2>
       <p class="text-gray-600">Coming soon...</p>
     </section>
@@ -164,6 +164,6 @@
       window.location.href = "login.html";
     };
   </script>
-
+ <script type="module" src="./js/staff-members.js"></script>
 </body>
 </html>
