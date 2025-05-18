@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Panel • jnanaTattva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen text-white p-6">
+
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold">Welcome to Student Panel</h1>
+    <p class="mt-2 text-lg">Manage your classes, assignments, and more!</p>
+  </header>
+
+  <main class="space-y-6 max-w-4xl mx-auto">
+
+    <section class="bg-white bg-opacity-10 rounded-xl p-6 shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4">Upcoming Classes</h2>
+      <ul class="list-disc list-inside">
+        <li>Maths - Monday 10:00 AM</li>
+        <li>Physics - Tuesday 1:00 PM</li>
+        <li>Computer Science - Wednesday 11:00 AM</li>
+      </ul>
+    </section>
+
+    <section class="bg-white bg-opacity-10 rounded-xl p-6 shadow-lg">
+      <h2 class="text-2xl font-semibold mb-4">Assignments</h2>
+      <ul class="list-disc list-inside">
+        <li>Submit Math Homework by Friday</li>
+        <li>Physics Lab report due next Monday</li>
+      </ul>
+    </section>
+
+    <button 
+      onclick="logout()" 
+      class="mt-8 px-6 py-3 bg-pink-600 rounded-full font-semibold hover:bg-pink-500 transition"
+    >
+      Log Out
+    </button>
+  </main>
+
+  <script>
+    function logout() {
+      // Just redirect to login page, you can clear tokens/cookies here if you implement them
+      window.location.href = 'login.html';
+    }
+  </script>
+  <script type="module" src="js/login.js"></script>
+
+</body>
+</html>

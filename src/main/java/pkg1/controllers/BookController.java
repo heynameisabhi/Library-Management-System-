@@ -41,8 +41,9 @@ public class BookController {
 	
 	@PostMapping
 	public BookEntity addBook(@RequestBody BookEntity book) {
-		return bookService.addBook(book);
+	    return bookService.addBook(book);
 	}
+
 	
 	@PutMapping("/{id}")
 	public BookEntity updateBook(@PathVariable int id, @RequestBody BookEntity book) {

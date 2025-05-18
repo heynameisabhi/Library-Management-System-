@@ -2,52 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Library Management</title>
-  <link rel="stylesheet" href="/css/style.css">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JnanaTattva • Library Reimagined</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.ico" />
 </head>
-<body>
-  <nav class="navbar">
-    <div class="nav-brand">Library Management</div>
-    <div class="nav-links">
-      <a href="index.html" class="active"><i class="fas fa-home"></i> Home</a>
-      <a href="books.html"><i class="fas fa-book"></i> Books</a>
-      <a href="add-book.html"><i class="fas fa-plus"></i> Add Book</a>
-      <a href="search.html"><i class="fas fa-search"></i> Search</a>
-    </div>
+<body class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 text-white font-sans">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center p-6 bg-opacity-20 backdrop-blur-md shadow-md">
+    <h1 class="text-3xl font-bold text-pink-300">JnanaTattva</h1>
+    <ul class="flex space-x-6 text-lg">
+      <li><a href="#features" class="hover:text-pink-400">Features</a></li>
+      <li><a href="#about" class="hover:text-pink-400">About</a></li>
+      <li><a href="#contact" class="hover:text-pink-400">Contact</a></li>
+    </ul>
+    <a href="login.html" class="bg-pink-500 hover:bg-pink-400 px-4 py-2 rounded-full font-semibold">Login</a>
   </nav>
 
-  <div class="hero">
-    <div class="hero-content">
-      <h1>Welcome to Library Management System</h1>
-      <p>Your one-stop solution for managing library resources</p>
-    </div>
-  </div>
+  <!-- Hero Section -->
+  <section class="text-center py-24 px-4 md:px-32">
+    <h2 class="text-5xl font-bold mb-6 animate-pulse">Your Library, Elevated</h2>
+    <p class="text-xl mb-8 max-w-2xl mx-auto">
+      AI-driven management for modern libraries. Catalog, track, analyze — all in one place.
+    </p>
+    <a href="login.html" class="bg-white text-pink-600 px-8 py-3 text-lg rounded-full font-bold hover:bg-pink-200 transition">
+      Get Started
+    </a>
+  </section>
 
-  <div class="container">
-    <div class="features">
-      <div class="feature-card">
-        <i class="fas fa-book-open"></i>
-        <h3>View All Books</h3>
-        <p>Browse through our extensive collection of books</p>
-        <a href="books.html" class="btn">View Books</a>
+  <!-- Features Section -->
+  <section id="features" class="py-20 bg-white bg-opacity-10 backdrop-blur-md">
+    <div class="text-center mb-12">
+      <h3 class="text-4xl font-semibold text-pink-300">Features</h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-8 md:px-24">
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl shadow-md hover:scale-105 transition">
+        <h4 class="text-2xl font-bold mb-2 text-pink-300">Smart Search</h4>
+        <p>Instantly find any book or resource using AI-enhanced search algorithms.</p>
       </div>
-      
-      <div class="feature-card">
-        <i class="fas fa-plus-circle"></i>
-        <h3>Add New Book</h3>
-        <p>Add new books to the library collection</p>
-        <a href="add-book.html" class="btn">Add Book</a>
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl shadow-md hover:scale-105 transition">
+        <h4 class="text-2xl font-bold mb-2 text-pink-300">Role-Based Access</h4>
+        <p>Custom dashboards for members and staff with secure login.</p>
       </div>
-      
-      <div class="feature-card">
-        <i class="fas fa-search"></i>
-        <h3>Search Books</h3>
-        <p>Find books quickly with our search feature</p>
-        <a href="search.html" class="btn">Search</a>
+      <div class="bg-white bg-opacity-10 p-6 rounded-xl shadow-md hover:scale-105 transition">
+        <h4 class="text-2xl font-bold mb-2 text-pink-300">Real-Time Reports</h4>
+        <p>Track issue/return status, overdue books, and usage trends.</p>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-20 px-8 md:px-32 text-center">
+    <h3 class="text-4xl font-semibold text-pink-300 mb-4">About jnanaTattva</h3>
+    <p class="max-w-3xl mx-auto text-lg">
+      JnanaTattva is built by passionate developers to empower educational institutions with smarter library management. 
+      Our mission is to simplify, optimize, and reimagine how libraries work in the digital age.
+    </p>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="bg-white bg-opacity-10 py-16 text-center">
+    <h3 class="text-3xl font-semibold text-pink-300 mb-4">Contact Us</h3>
+    <p>Email: support@jnanaTattva.com</p>
+    <p>Phone: +91-9876543210</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-4 text-center bg-opacity-20 backdrop-blur-md text-sm text-gray-300">
+    © 2025 JnanaTattva. All rights reserved.
+  </footer>
+
 </body>
 </html>
