@@ -15,7 +15,7 @@ public class MemberEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="MemberID")
-	private int memberid;
+	private Long memberid;
 	
 	@Column(name="Name",nullable=false)
 	private String name;
@@ -45,7 +45,7 @@ public class MemberEntity {
 	
 	
 
-	public MemberEntity(int memberid, String name, String address, Long phoneNumber, String email,
+	public MemberEntity(Long memberid, String name, String address, Long phoneNumber, String email,
 			MembershipType membershipType) {
 		super();
 		this.memberid = memberid;
@@ -58,11 +58,11 @@ public class MemberEntity {
 
 
 
-	public int getMemberid() {
+	public Long getMemberid() {
 		return memberid;
 	}
 
-	public void setMemberid(int memberid) {
+	public void setMemberid(Long memberid) {
 		this.memberid = memberid;
 	}
 

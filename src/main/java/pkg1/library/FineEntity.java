@@ -1,6 +1,6 @@
 package pkg1.library;
 
-import java.math.BigDecimal;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ public class FineEntity {
 	private MemberEntity memberid;
 	
 	@Column(name="FineAmount",precision=5,scale=2)
-	private BigDecimal fineAmount;
+	private int fineAmount;
 	
 	@Column(name = "PaymentStatus")
     private boolean paymentStatus;
@@ -35,7 +35,7 @@ public class FineEntity {
 		super();
 	}
  
-	public FineEntity(int fineid, MemberEntity memberid, BigDecimal fineAmount, boolean paymentStatus) {
+	public FineEntity(int fineid, MemberEntity memberid, int fineAmount, boolean paymentStatus) {
 		super();
 		this.fineid = fineid;
 		this.memberid = memberid;
@@ -59,11 +59,11 @@ public class FineEntity {
 		this.memberid = memberid;
 	}
 
-	public BigDecimal getFineAmount() {
+	public int getFineAmount() {
 		return fineAmount;
 	}
 
-	public void setFineAmount(BigDecimal fineAmount) {
+	public void setFineAmount(int fineAmount) {
 		this.fineAmount = fineAmount;
 	}
 

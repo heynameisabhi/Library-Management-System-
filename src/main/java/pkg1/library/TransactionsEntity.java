@@ -1,6 +1,6 @@
 package pkg1.library;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -18,7 +18,7 @@ public class TransactionsEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="TransactionId")
-	private int TransactionId;
+	private Long TransactionId;
 	
 	@ManyToOne
 	@JoinColumn(name="BookId",nullable=false)
@@ -42,14 +42,14 @@ public class TransactionsEntity {
 	private LocalDate datereturned;
 	
 	@Column(name="FineAmount")
-	private BigDecimal fineamount;
+	private int fineamount;
 
 	public TransactionsEntity() {
 		super();
 	}
 
-	public TransactionsEntity(int transactionId, BookEntity bookId, MemberEntity memberId, LocalDate dateborrowed,
-			StaffEntity staffId, LocalDate duedate, LocalDate datereturned, BigDecimal fineamount) {
+	public TransactionsEntity(Long transactionId, BookEntity bookId, MemberEntity memberId, LocalDate dateborrowed,
+			StaffEntity staffId, LocalDate duedate, LocalDate datereturned, int fineamount) {
 		super();
 		TransactionId = transactionId;
 		this.bookId = bookId;
@@ -61,11 +61,11 @@ public class TransactionsEntity {
 		this.fineamount = fineamount;
 	}
 
-	public int getTransactionId() {
+	public Long getTransactionId() {
 		return TransactionId;
 	}
 
-	public void setTransactionId(int transactionId) {
+	public void setTransactionId(Long transactionId) {
 		TransactionId = transactionId;
 	}
 
@@ -117,11 +117,11 @@ public class TransactionsEntity {
 		this.datereturned = datereturned;
 	}
 
-	public BigDecimal getFineamount() {
+	public int getFineamount() {
 		return fineamount;
 	}
 
-	public void setFineamount(BigDecimal fineamount) {
+	public void setFineamount(int fineamount) {
 		this.fineamount = fineamount;
 	}
 	

@@ -18,7 +18,7 @@ public class StaffService {
         return staffRepo.findAll();
     }
 
-    public Optional<StaffEntity> getStaffById(int id) {
+    public Optional<StaffEntity> getStaffById(Long id) {
         return staffRepo.findById(id);
     }
 
@@ -26,12 +26,12 @@ public class StaffService {
         return staffRepo.save(staff);
     }
 
-    public StaffEntity updateStaff(int id, StaffEntity staff) {
+    public StaffEntity updateStaff(Long id, StaffEntity staff) {
         staff.setStaffid(id);
         return staffRepo.save(staff);
     }
 
-    public void deleteStaff(int id) {
+    public void deleteStaff(Long id) {
         staffRepo.deleteById(id);
     }
 }

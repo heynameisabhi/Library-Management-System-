@@ -28,7 +28,7 @@ public class StaffController {
 	}
 
 	@GetMapping("/{id}")
-	public Optional<StaffEntity> getStaff(@PathVariable int id) {
+	public Optional<StaffEntity> getStaff(@PathVariable Long id) {
 	    return staffService.getStaffById(id);
 	}
 
@@ -38,12 +38,12 @@ public class StaffController {
 	}
 
 	@PutMapping("/{id}")
-	public StaffEntity updateStaff(@PathVariable int id, @RequestBody StaffEntity staff) {
+	public StaffEntity updateStaff(@PathVariable Long id, @RequestBody StaffEntity staff) {
 	    return staffService.updateStaff(id, staff);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteStaff(@PathVariable int id) {
+	public void deleteStaff(@PathVariable Long id) {
 	    staffService.deleteStaff(id);
 	}
 

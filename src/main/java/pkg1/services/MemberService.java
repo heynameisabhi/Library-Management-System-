@@ -19,7 +19,7 @@ public class MemberService {
         return memberrepo.findAll();
     }
 
-    public Optional<MemberEntity> getMemberById(int id) {
+    public Optional<MemberEntity> getMemberById(Long id) {
         return memberrepo.findById(id);
     }
 
@@ -27,12 +27,12 @@ public class MemberService {
         return memberrepo.save(member);
     }
 
-    public MemberEntity updateMember(int id, MemberEntity member) {
+    public MemberEntity updateMember(Long id, MemberEntity member) {
         member.setMemberid(id);
         return memberrepo.save(member);
     }
 
-    public void deleteMember(int id) {
+    public void deleteMember(Long id) {
         memberrepo.deleteById(id);
     }
 }

@@ -1,3 +1,4 @@
+
 package pkg1.services;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class BookService {
 		return bookRepo.findAll();
 	}
 	
-	public Optional<BookEntity> getBookById(int id) {
+	public Optional<BookEntity> getBookById(Long id) {
 		return bookRepo.findById(id);
 	}
 	
@@ -29,13 +30,13 @@ public class BookService {
 		return bookRepo.save(book);
 	}
 	
-	public BookEntity updateBookEntity(int id, BookEntity book) {
+	public BookEntity updateBookEntity(Long id, BookEntity book) {
 		book.setBookId(id);
 		return bookRepo.save(book);
 		
 	}
 	
-	public void deleteBook(int id) {
+	public void deleteBook(Long id) {
 		bookRepo.deleteById(id);
 		
 	}
@@ -44,4 +45,3 @@ public class BookService {
 	
 	
 	
-

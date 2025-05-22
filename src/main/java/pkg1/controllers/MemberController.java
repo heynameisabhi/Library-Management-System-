@@ -30,7 +30,7 @@ public class MemberController {
 
    
     @GetMapping("/{id}")
-    public Optional<MemberEntity> getMemberById(@PathVariable int id) {
+    public Optional<MemberEntity> getMemberById(@PathVariable Long id) {
         return memberService.getMemberById(id);
     }
 
@@ -42,13 +42,13 @@ public class MemberController {
 
    
     @PutMapping("/{id}")
-    public MemberEntity updateMember(@PathVariable int id, @RequestBody MemberEntity member) {
+    public MemberEntity updateMember(@PathVariable Long id, @RequestBody MemberEntity member) {
         return memberService.updateMember(id, member);
     }
 
     
     @DeleteMapping("/{id}")
-    public void deleteMember(@PathVariable int id) {
+    public void deleteMember(@PathVariable Long id) {
         memberService.deleteMember(id);
     }
 }

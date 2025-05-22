@@ -13,7 +13,7 @@ public class StaffEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="StaffID")
-	private int staffid;
+	private Long staffid;
 	
 	@Column(name="Name",nullable=false)
 	private String name;
@@ -28,7 +28,7 @@ public class StaffEntity {
 		super();
 	}
 
-	public StaffEntity(int staffid, String name, String role, String contactinformation) {
+	public StaffEntity(Long staffid, String name, String role, String contactinformation) {
 		super();
 		this.staffid = staffid;
 		this.name = name;
@@ -36,11 +36,11 @@ public class StaffEntity {
 		this.contactinformation = contactinformation;
 	}
 
-	public int getStaffid() {
+	public Long getStaffid() {
 		return staffid;
 	}
 
-	public void setStaffid(int staffid) {
+	public void setStaffid(Long staffid) {
 		this.staffid = staffid;
 	}
 

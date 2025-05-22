@@ -89,10 +89,9 @@
 	  </table>
 	</section>
 
-    <!-- Issued Books Placeholder -->
-    <section name="issueBook" id="issuedBooks" class="section hidden">
-      <h2 class="text-2xl font-semibold mb-4">📖 Issued Books</h2>
-      <p class="text-gray-600">Coming soon...</p>
+    <!-- Issued Books Section -->
+    <section id="issuedBooks" class="section hidden">
+      <!-- This section will be populated by staff-transactions.js -->
     </section>
 
     <!-- Reports Placeholder -->
@@ -102,38 +101,15 @@
     </section>
   </main>
 
-  <!-- Script for navigation -->
+  <!-- Script for navigation (removed - now handled in the module script below) -->
   <script>
-    function showSection(sectionId, clickedBtn) {
-      // Hide all sections
-      document.querySelectorAll('.section').forEach(section => {
-        section.classList.add('hidden');
-      });
-      document.getElementById(sectionId).classList.remove('hidden');
-
-      // Remove active styles from all nav buttons
-      document.querySelectorAll('.nav-link').forEach(btn => {
-        btn.classList.remove('bg-indigo-900', 'font-semibold');
-      });
-
-      // Add active styles to the clicked button
-      clickedBtn.classList.add('bg-indigo-900', 'font-semibold');
-    }
-
-    function logout() {
-      window.location.href = "login.html";
-    }
-
-    // Show default section on load
-    window.onload = () => {
-      const defaultBtn = document.querySelector('.nav-link');
-      if (defaultBtn) defaultBtn.click();
-    };
+    // These functions are now defined in the module script below
   </script>
 
   <script type="module" src="js/staff-books.js"></script>
   <script type="module">
-    import { setupMemberManagement } from 'js/staff-members.js';
+    import { setupMemberManagement } from './js/staff-members.js';
+    import { setupTransactionManagement } from './js/staff-transactions.js';
 
     window.onload = () => {
       const sectionId = localStorage.getItem('activeSection') || 'bookManagement';
@@ -153,10 +129,15 @@
 
       localStorage.setItem('activeSection', sectionId);
 
-      // Initialize script only if not yet loaded
+      // Initialize scripts only if not yet loaded
       if (sectionId === 'memberManagement' && !window.memberSetupDone) {
         setupMemberManagement();
         window.memberSetupDone = true;
+      }
+
+      if (sectionId === 'issuedBooks' && !window.transactionSetupDone) {
+        setupTransactionManagement();
+        window.transactionSetupDone = true;
       }
     };
 
@@ -164,6 +145,7 @@
       window.location.href = "login.html";
     };
   </script>
- <script type="module" src="./js/staff-members.js"></script>
+  <script type="module" src="./js/staff-members.js"></script>
+  <script type="module" src="./js/staff-transactions.js"></script>
 </body>
 </html>
