@@ -1,13 +1,13 @@
 
-# 📚 Library Management System – Backend
+#  Library Management System – Backend
 
 A fully functional RESTful backend for a Library Management System built with Spring Boot. This project handles core features such as book management, member records, staff tracking, transaction history, fine calculations, and more. It exposes powerful HTTP endpoints that can be tested using Postman, Talend API Tester, or integrated into any frontend.
 
-💡 Built with beginners in mind but powerful enough for real-world use.
+ Built with beginners in mind but powerful enough for real-world use.
 
 ---
 
-# 🛠️ Tech Stack
+#  Tech Stack
 
 | Layer       | Technology                |
 |-------------|---------------------------|
@@ -21,7 +21,7 @@ A fully functional RESTful backend for a Library Management System built with Sp
 
 ---
 
-# 📦 Project Modules
+#  Project Modules
 
 ✔ Book Management  
 ✔ Member Management  
@@ -34,7 +34,7 @@ A fully functional RESTful backend for a Library Management System built with Sp
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 src/
 ├── main/
@@ -59,7 +59,7 @@ src/
 
 ---
 
-# 📡 API Endpoints
+#  API Endpoints
 
 | HTTP Method | Endpoint               | Description                |
 |-------------|------------------------|----------------------------|
@@ -74,7 +74,7 @@ All responses and requests are in JSON.
 
 ---
 
-# 🧪 How to Test
+#  How to Test
 
 Use Postman or Talend API Tester:
 
@@ -90,7 +90,7 @@ Request body:
 
 ---
 
-# 🧰 Setup Instructions
+#  Setup Instructions
 
 1. Clone this repo:   git clone https://github.com/heynameisabhi/Library-Management-System-.git
 
@@ -110,7 +110,7 @@ http://localhost:8080/books
 
 ---
 
-# 📝 Sample Entities
+#  Sample Entities
 
 BookEntity:
 - id: Integer
@@ -127,16 +127,5 @@ MemberEntity:
 - memberType: String
 
 ...
-
----
-
-# 🚀 Future Enhancements
-
-- Role-based user authentication (Spring Security)
-- Admin dashboard UI (React or Angular)
-- Email notifications for due dates
-- Pagination & Sorting APIs
-- Export data to Excel/PDF
-
 ---
 
