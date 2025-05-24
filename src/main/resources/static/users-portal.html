@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Users Portal • JnanaTattva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <h1 class="text-2xl font-bold text-white">📚 JnanaTattva</h1>
+          <span class="ml-4 text-indigo-100">Users Portal</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2">
+            <div class="h-8 w-8 rounded-full bg-white bg-opacity-20 flex items-center justify-center">
+              <i class="fas fa-user text-white"></i>
+            </div>
+            <span id="userName" class="text-white font-medium">User</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button id="notificationBtn" class="relative p-2 text-white hover:bg-white hover:bg-opacity-20 rounded-lg transition">
+              <i class="fas fa-bell"></i>
+              <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden">3</span>
+            </button>
+            <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition">
+              <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex space-x-8 overflow-x-auto">
+        <button class="nav-tab active border-b-2 border-indigo-500 py-4 px-1 text-indigo-600 font-medium whitespace-nowrap" data-section="dashboard">
+          <i class="fas fa-home mr-2"></i>Dashboard
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="profile">
+          <i class="fas fa-user-circle mr-2"></i>Profile Management
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="request">
+          <i class="fas fa-hand-paper mr-2"></i>Request Book
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="digital">
+          <i class="fas fa-tablet-alt mr-2"></i>Digital Library
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="borrowed">
+          <i class="fas fa-bookmark mr-2"></i>My Books
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="history">
+          <i class="fas fa-history mr-2"></i>History
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="notifications">
+          <i class="fas fa-bell mr-2"></i>Notifications
+        </button>
+        <button class="nav-tab border-b-2 border-transparent py-4 px-1 text-gray-500 hover:text-gray-700 whitespace-nowrap" data-section="settings">
+          <i class="fas fa-cog mr-2"></i>Settings
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="section">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Your Library Portal!</h2>
+        <p class="text-gray-600">Manage your reading journey, discover new books, and stay connected with the library.</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white cursor-pointer hover:shadow-xl transition" onclick="switchSection('request')">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Request a Book</h3>
+              <p class="text-blue-100">Find and request your next read</p>
+            </div>
+            <i class="fas fa-hand-paper text-3xl text-blue-200"></i>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white cursor-pointer hover:shadow-xl transition" onclick="switchSection('digital')">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Digital Library</h3>
+              <p class="text-purple-100">Access e-books and resources</p>
+            </div>
+            <i class="fas fa-tablet-alt text-3xl text-purple-200"></i>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white cursor-pointer hover:shadow-xl transition" onclick="switchSection('profile')">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold mb-2">Manage Profile</h3>
+              <p class="text-green-100">Update your information</p>
+            </div>
+            <i class="fas fa-user-circle text-3xl text-green-200"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-blue-600 text-sm font-medium">Books Borrowed</p>
+              <p id="borrowedCount" class="text-3xl font-bold text-blue-800">0</p>
+            </div>
+            <i class="fas fa-book-open text-blue-500 text-3xl"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-green-600 text-sm font-medium">Books Returned</p>
+              <p id="returnedCount" class="text-3xl font-bold text-green-800">0</p>
+            </div>
+            <i class="fas fa-check-circle text-green-500 text-3xl"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-yellow-600 text-sm font-medium">Due Soon</p>
+              <p id="dueSoonCount" class="text-3xl font-bold text-yellow-800">0</p>
+            </div>
+            <i class="fas fa-clock text-yellow-500 text-3xl"></i>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-red-600 text-sm font-medium">Overdue</p>
+              <p id="overdueCount" class="text-3xl font-bold text-red-800">0</p>
+            </div>
+            <i class="fas fa-exclamation-triangle text-red-500 text-3xl"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <div class="space-y-3">
+            <button class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition flex items-center justify-center" onclick="switchSection('books')">
+              <i class="fas fa-search mr-2"></i>Browse Books
+            </button>
+            <button class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition flex items-center justify-center" onclick="switchSection('borrowed')">
+              <i class="fas fa-bookmark mr-2"></i>View My Books
+            </button>
+            <button class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition flex items-center justify-center" onclick="switchSection('history')">
+              <i class="fas fa-history mr-2"></i>View History
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Reading Activity</h3>
+          <div class="relative h-64">
+            <canvas id="readingActivityChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="bg-white rounded-lg shadow-md">
+        <div class="p-6 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
+        </div>
+        <div id="recentActivity" class="p-6">
+          <!-- Recent activity will be populated here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Browse Books Section -->
+    <section id="books" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Browse Books</h2>
+        <p class="text-gray-600">Discover and explore our library collection</p>
+      </div>
+
+      <!-- Search and Filters -->
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Search Books</label>
+            <input type="text" id="bookSearch" placeholder="Search by title, author, or ISBN..." class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+            <select id="categoryFilter" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="">All Categories</option>
+              <!-- Categories will be populated dynamically -->
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Books Grid -->
+      <div id="booksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Books will be populated here -->
+      </div>
+
+      <!-- Loading State -->
+      <div id="booksLoading" class="hidden text-center py-12">
+        <i class="fas fa-spinner fa-spin text-blue-600 text-4xl mb-4"></i>
+        <p class="text-gray-600">Loading books...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div id="booksEmpty" class="hidden text-center py-12">
+        <i class="fas fa-book text-gray-300 text-6xl mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No books found</h3>
+        <p class="text-gray-500">Try adjusting your search criteria</p>
+      </div>
+    </section>
+
+    <!-- My Books Section -->
+    <section id="borrowed" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">My Books</h2>
+        <p class="text-gray-600">Books you currently have borrowed</p>
+      </div>
+
+      <!-- Borrowed Books List -->
+      <div id="borrowedBooksList" class="space-y-4">
+        <!-- Borrowed books will be populated here -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="borrowedEmpty" class="hidden text-center py-12">
+        <i class="fas fa-bookmark text-gray-300 text-6xl mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No books borrowed</h3>
+        <p class="text-gray-500 mb-4">You haven't borrowed any books yet</p>
+        <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition" onclick="switchSection('books')">
+          <i class="fas fa-search mr-2"></i>Browse Books
+        </button>
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Borrowing History</h2>
+        <p class="text-gray-600">Your complete library transaction history</p>
+      </div>
+
+      <!-- History Table -->
+      <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrowed Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Returned Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody" class="bg-white divide-y divide-gray-200">
+              <!-- History will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="historyEmpty" class="hidden text-center py-12">
+        <i class="fas fa-history text-gray-300 text-6xl mb-4"></i>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">No history found</h3>
+        <p class="text-gray-500">Your borrowing history will appear here</p>
+      </div>
+    </section>
+
+    <!-- Profile Management Section -->
+    <section id="profile" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Profile Management</h2>
+        <p class="text-gray-600">Manage your account information and preferences</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Profile Information -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-semibold text-gray-900">Personal Information</h3>
+              <button id="editProfileBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition">
+                <i class="fas fa-edit mr-2"></i>Edit Profile
+              </button>
+            </div>
+
+            <div class="flex items-center space-x-6 mb-6">
+              <div class="relative">
+                <div class="h-24 w-24 rounded-full bg-indigo-100 flex items-center justify-center">
+                  <i class="fas fa-user text-indigo-600 text-3xl"></i>
+                </div>
+                <button class="absolute bottom-0 right-0 bg-white rounded-full p-2 shadow-md border">
+                  <i class="fas fa-camera text-gray-600"></i>
+                </button>
+              </div>
+              <div>
+                <h3 id="profileName" class="text-xl font-semibold text-gray-900">User Name</h3>
+                <p id="profileEmail" class="text-gray-600">user@example.com</p>
+                <span id="profileMembershipBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
+                  <i class="fas fa-user mr-1"></i>Library Member
+                </span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <input type="text" id="profileFullName" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" readonly>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                <input type="email" id="profileEmailInput" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" readonly>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                <input type="tel" id="profilePhoneInput" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" readonly>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                <input type="date" id="profileDOB" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" readonly>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                <textarea id="profileAddressInput" rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" readonly></textarea>
+              </div>
+            </div>
+
+            <div id="profileEditActions" class="hidden mt-6 flex gap-3">
+              <button id="saveProfileBtn" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-save mr-2"></i>Save Changes
+              </button>
+              <button id="cancelEditBtn" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-400 transition">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- Reading Preferences -->
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Reading Preferences</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Favorite Genres</label>
+                <select multiple id="favoriteGenres" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="fiction">Fiction</option>
+                  <option value="non-fiction">Non-Fiction</option>
+                  <option value="science">Science</option>
+                  <option value="history">History</option>
+                  <option value="biography">Biography</option>
+                  <option value="technology">Technology</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Notification Preferences</label>
+                <div class="space-y-2">
+                  <label class="flex items-center">
+                    <input type="checkbox" id="emailNotifications" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                    <span class="ml-2 text-sm text-gray-700">Email notifications</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" id="dueDateReminders" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                    <span class="ml-2 text-sm text-gray-700">Due date reminders</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" id="newBookAlerts" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                    <span class="ml-2 text-sm text-gray-700">New book alerts</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Statistics -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Library Statistics</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Member Since</span>
+                <span id="memberSince" class="text-sm font-medium text-gray-900">-</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Total Books Borrowed</span>
+                <span id="profileTotalBorrowed" class="text-sm font-medium text-gray-900">0</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Currently Borrowed</span>
+                <span id="profileCurrentlyBorrowed" class="text-sm font-medium text-gray-900">0</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Books Returned</span>
+                <span id="profileBooksReturned" class="text-sm font-medium text-gray-900">0</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">Account Status</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  <i class="fas fa-check-circle mr-1"></i>Active
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div class="space-y-3">
+              <button class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition text-left">
+                <i class="fas fa-key mr-2"></i>Change Password
+              </button>
+              <button class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition text-left">
+                <i class="fas fa-download mr-2"></i>Download Library Card
+              </button>
+              <button class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition text-left">
+                <i class="fas fa-history mr-2"></i>Export Reading History
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Request Book Section -->
+    <section id="request" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Request a Book</h2>
+        <p class="text-gray-600">Search and request books from our library collection</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Search and Request Form -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Search Books</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Search by Title/Author/ISBN</label>
+                <input type="text" id="bookRequestSearch" placeholder="Enter book title, author, or ISBN..." class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                <select id="requestCategoryFilter" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                  <option value="">All Categories</option>
+                  <option value="fiction">Fiction</option>
+                  <option value="non-fiction">Non-Fiction</option>
+                  <option value="science">Science</option>
+                  <option value="history">History</option>
+                  <option value="biography">Biography</option>
+                  <option value="technology">Technology</option>
+                </select>
+              </div>
+            </div>
+            <button id="searchBooksBtn" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition">
+              <i class="fas fa-search mr-2"></i>Search Books
+            </button>
+          </div>
+
+          <!-- Search Results -->
+          <div id="bookRequestResults" class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Search Results</h3>
+            <div id="requestBooksGrid" class="space-y-4">
+              <!-- Search results will be populated here -->
+              <div class="text-center py-8 text-gray-500">
+                <i class="fas fa-search text-4xl mb-4"></i>
+                <p>Search for books to see results here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Request Status and History -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Request Status</h3>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                <span class="text-sm text-yellow-800">Pending Requests</span>
+                <span id="pendingRequestsCount" class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">0</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <span class="text-sm text-green-800">Approved Requests</span>
+                <span id="approvedRequestsCount" class="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-medium">0</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                <span class="text-sm text-red-800">Rejected Requests</span>
+                <span id="rejectedRequestsCount" class="bg-red-200 text-red-800 px-2 py-1 rounded-full text-xs font-medium">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Requests</h3>
+            <div id="recentRequests" class="space-y-3">
+              <!-- Recent requests will be populated here -->
+              <div class="text-center py-4 text-gray-500">
+                <p class="text-sm">No recent requests</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Request</h3>
+            <p class="text-sm text-gray-600 mb-4">Can't find a book? Request it directly!</p>
+            <div class="space-y-3">
+              <input type="text" id="quickRequestTitle" placeholder="Book Title" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <input type="text" id="quickRequestAuthor" placeholder="Author Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <textarea id="quickRequestNotes" placeholder="Additional notes..." rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+              <button id="submitQuickRequestBtn" class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition">
+                <i class="fas fa-paper-plane mr-2"></i>Submit Request
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Digital Library Section -->
+    <section id="digital" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Digital Library</h2>
+        <p class="text-gray-600">Access e-books, audiobooks, and digital resources</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+        <!-- Digital Stats -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-lg p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-blue-100 text-sm">E-Books Available</p>
+              <p id="ebooksCount" class="text-2xl font-bold">0</p>
+            </div>
+            <i class="fas fa-book-reader text-3xl text-blue-200"></i>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg shadow-lg p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-100 text-sm">Audiobooks</p>
+              <p id="audiobooksCount" class="text-2xl font-bold">0</p>
+            </div>
+            <i class="fas fa-headphones text-3xl text-purple-200"></i>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg shadow-lg p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-green-100 text-sm">Research Papers</p>
+              <p id="papersCount" class="text-2xl font-bold">0</p>
+            </div>
+            <i class="fas fa-file-alt text-3xl text-green-200"></i>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-orange-100 text-sm">Magazines</p>
+              <p id="magazinesCount" class="text-2xl font-bold">0</p>
+            </div>
+            <i class="fas fa-newspaper text-3xl text-orange-200"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Digital Content Browser -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-semibold text-gray-900">Browse Digital Content</h3>
+              <div class="flex space-x-2">
+                <button class="digital-filter-btn active bg-blue-600 text-white px-4 py-2 rounded-lg text-sm" data-type="all">All</button>
+                <button class="digital-filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300" data-type="ebooks">E-Books</button>
+                <button class="digital-filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300" data-type="audiobooks">Audiobooks</button>
+                <button class="digital-filter-btn bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm hover:bg-gray-300" data-type="papers">Papers</button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <input type="text" id="digitalSearch" placeholder="Search digital content..." class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+            </div>
+
+            <div id="digitalContentGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Digital content will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Reading Progress and Favorites -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Currently Reading</h3>
+            <div id="currentlyReading" class="space-y-3">
+              <!-- Currently reading items will be populated here -->
+              <div class="text-center py-4 text-gray-500">
+                <i class="fas fa-book-open text-2xl mb-2"></i>
+                <p class="text-sm">No books currently being read</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Favorites</h3>
+            <div id="digitalFavorites" class="space-y-3">
+              <!-- Favorite digital content will be populated here -->
+              <div class="text-center py-4 text-gray-500">
+                <i class="fas fa-heart text-2xl mb-2"></i>
+                <p class="text-sm">No favorites yet</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Reading Goals</h3>
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Monthly Goal</span>
+                  <span>3/5 books</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span>Yearly Goal</span>
+                  <span>28/50 books</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                  <div class="bg-green-600 h-2 rounded-full" style="width: 56%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notifications Section -->
+    <section id="notifications" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Notifications</h2>
+        <p class="text-gray-600">Stay updated with library announcements and reminders</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Notifications List -->
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-lg shadow-md">
+            <div class="p-6 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">All Notifications</h3>
+                <div class="flex space-x-2">
+                  <button id="markAllReadBtn" class="text-sm text-blue-600 hover:text-blue-800">Mark all as read</button>
+                  <button id="clearNotificationsBtn" class="text-sm text-red-600 hover:text-red-800">Clear all</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="notificationsList" class="divide-y divide-gray-200">
+              <!-- Notifications will be populated here -->
+              <div class="text-center py-8 text-gray-500">
+                <i class="fas fa-bell-slash text-4xl mb-4"></i>
+                <p>No notifications yet</p>
+                <p class="text-sm">You'll see important updates here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Notification Settings</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Email Notifications</p>
+                  <p class="text-xs text-gray-500">Receive notifications via email</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Due Date Reminders</p>
+                  <p class="text-xs text-gray-500">Get reminded before books are due</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">New Book Alerts</p>
+                  <p class="text-xs text-gray-500">Notify when new books arrive</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Event Announcements</p>
+                  <p class="text-xs text-gray-500">Library events and programs</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Notification Summary</h3>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                <span class="text-sm text-blue-800">Unread</span>
+                <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">0</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <span class="text-sm text-gray-800">Total Today</span>
+                <span class="bg-gray-200 text-gray-800 px-2 py-1 rounded-full text-xs font-medium">0</span>
+              </div>
+              <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                <span class="text-sm text-green-800">This Week</span>
+                <span class="bg-green-200 text-green-800 px-2 py-1 rounded-full text-xs font-medium">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings" class="section hidden">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Settings</h2>
+        <p class="text-gray-600">Customize your library experience and account preferences</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Account Settings -->
+        <div class="lg:col-span-2 space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Account Settings</h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Display Language</label>
+                <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="en">English</option>
+                  <option value="es">Spanish</option>
+                  <option value="fr">French</option>
+                  <option value="de">German</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Time Zone</label>
+                <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="UTC">UTC</option>
+                  <option value="EST">Eastern Time</option>
+                  <option value="PST">Pacific Time</option>
+                  <option value="CST">Central Time</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Date Format</label>
+                <select class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                  <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                  <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                  <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Privacy Settings</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Make Reading History Public</p>
+                  <p class="text-xs text-gray-500">Allow others to see your reading activity</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Share Reading Goals</p>
+                  <p class="text-xs text-gray-500">Display your reading goals publicly</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm font-medium text-gray-900">Allow Contact from Library</p>
+                  <p class="text-xs text-gray-500">Receive promotional emails and updates</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Security</h3>
+            <div class="space-y-4">
+              <button class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition text-left">
+                <i class="fas fa-key mr-2"></i>Change Password
+              </button>
+              <button class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition text-left">
+                <i class="fas fa-shield-alt mr-2"></i>Enable Two-Factor Authentication
+              </button>
+              <button class="w-full bg-yellow-600 text-white p-3 rounded-lg hover:bg-yellow-700 transition text-left">
+                <i class="fas fa-download mr-2"></i>Download Account Data
+              </button>
+              <button class="w-full bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition text-left">
+                <i class="fas fa-trash mr-2"></i>Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Settings -->
+        <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Settings</h3>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">Dark Mode</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer">
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">Auto-Renew Books</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">Show Reading Progress</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Support</h3>
+            <div class="space-y-3">
+              <button class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition text-left">
+                <i class="fas fa-question-circle mr-2"></i>Help Center
+              </button>
+              <button class="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition text-left">
+                <i class="fas fa-envelope mr-2"></i>Contact Support
+              </button>
+              <button class="w-full bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 transition text-left">
+                <i class="fas fa-bug mr-2"></i>Report a Bug
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">About</h3>
+            <div class="space-y-2 text-sm text-gray-600">
+              <p><strong>Version:</strong> 2.1.0</p>
+              <p><strong>Last Updated:</strong> Dec 2024</p>
+              <p><strong>Library System:</strong> JnanaTattva</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Book Details Modal -->
+  <div id="bookDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">Book Details</h3>
+        <button id="closeBookDetailsBtn" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <div id="bookDetailsContent" class="space-y-4">
+        <!-- Book details will be populated here -->
+      </div>
+
+      <div class="flex gap-3 pt-4">
+        <button id="requestBookBtn" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+          <i class="fas fa-hand-paper mr-2"></i>Request Book
+        </button>
+        <button id="closeBookDetailsBtn2" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global variables
+    let currentStudent = null;
+    let allBooks = [];
+    let borrowedBooks = [];
+    let transactionHistory = [];
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('currentStudent');
+      localStorage.removeItem('currentUser');
+      window.location.href = "login.html";
+    }
+
+    // Navigation function
+    function switchSection(sectionName) {
+      // Update tabs
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        if (tab.dataset.section === sectionName) {
+          tab.classList.add('active', 'border-indigo-500', 'text-indigo-600');
+          tab.classList.remove('border-transparent', 'text-gray-500');
+        } else {
+          tab.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
+          tab.classList.add('border-transparent', 'text-gray-500');
+        }
+      });
+
+      // Update sections
+      document.querySelectorAll('.section').forEach(section => {
+        if (section.id === sectionName) {
+          section.classList.remove('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      });
+
+      // Load section-specific data
+      loadSectionData(sectionName);
+    }
+
+    // Show section function (for quick action buttons)
+    function showSection(sectionName) {
+      switchSection(sectionName);
+    }
+
+    // Load section data
+    function loadSectionData(sectionName) {
+      switch (sectionName) {
+        case 'dashboard':
+          loadDashboardData();
+          break;
+        case 'profile':
+          loadProfileData();
+          break;
+        case 'request':
+          loadRequestData();
+          break;
+        case 'digital':
+          loadDigitalLibraryData();
+          break;
+        case 'borrowed':
+          loadBorrowedBooks();
+          break;
+        case 'history':
+          loadTransactionHistory();
+          break;
+        case 'notifications':
+          loadNotificationsData();
+          break;
+        case 'settings':
+          loadSettingsData();
+          break;
+      }
+    }
+
+    // Load request data
+    function loadRequestData() {
+      console.log('Loading request data...');
+      // Implementation for loading book request data
+    }
+
+    // Load digital library data
+    function loadDigitalLibraryData() {
+      console.log('Loading digital library data...');
+
+      // Load digital content from localStorage (uploaded by staff)
+      const digitalContent = JSON.parse(localStorage.getItem('digitalContent') || '[]');
+      const grid = document.getElementById('digitalContentGrid');
+
+      if (!grid) return;
+
+      if (digitalContent.length === 0) {
+        grid.innerHTML = `
+          <div class="text-center py-8 text-gray-500 col-span-full">
+            <i class="fas fa-book-open text-4xl mb-4"></i>
+            <p>No digital content available yet.</p>
+            <p class="text-sm">Check back later for e-books, audiobooks, and more!</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Render digital content
+      grid.innerHTML = digitalContent.map(item => `
+        <div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition cursor-pointer" onclick="openDigitalContent('${item.id}')">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium px-2 py-1 rounded-full ${getDigitalContentTypeColor(item.type)}">
+              ${item.type.toUpperCase()}
+            </span>
+            <button onclick="event.stopPropagation(); addToFavorites('${item.id}')" class="text-gray-400 hover:text-red-500">
+              <i class="fas fa-heart"></i>
+            </button>
+          </div>
+          <h4 class="font-semibold text-gray-900 mb-1">${item.title}</h4>
+          <p class="text-sm text-gray-600 mb-2">by ${item.author}</p>
+          <p class="text-xs text-gray-500 mb-2">${item.category}</p>
+          <p class="text-xs text-gray-400 mb-3">${item.description}</p>
+          <div class="flex justify-between items-center text-xs text-gray-500">
+            <span><i class="fas fa-download mr-1"></i>${item.downloads} downloads</span>
+            <span><i class="fas fa-clock mr-1"></i>${new Date(item.uploadDate).toLocaleDateString()}</span>
+          </div>
+        </div>
+      `).join('');
+
+      // Setup digital content search and filter
+      setupDigitalContentSearch(digitalContent);
+
+      // Update digital content counts
+      updateDigitalContentCounts(digitalContent);
+    }
+
+    // Load notifications data
+    function loadNotificationsData() {
+      console.log('Loading notifications data...');
+      // Implementation for loading notifications
+    }
+
+    // Load settings data
+    function loadSettingsData() {
+      console.log('Loading settings data...');
+      // Implementation for loading user settings
+    }
+
+    // Initialize navigation
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchSection(tab.dataset.section);
+      });
+    });
+
+    // Initialize the dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const userData = localStorage.getItem('currentUser') || localStorage.getItem('currentStudent');
+      if (!userData) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      currentStudent = JSON.parse(userData);
+      document.getElementById('userName').textContent = currentStudent.name || 'User';
+
+      // Load initial dashboard data
+      loadDashboardData();
+
+      // Initialize profile edit functionality
+      initializeProfileEdit();
+
+      // Initialize notification functionality
+      initializeNotifications();
+    });
+
+    // Initialize profile edit functionality
+    function initializeProfileEdit() {
+      const editBtn = document.getElementById('editProfileBtn');
+      const saveBtn = document.getElementById('saveProfileBtn');
+      const cancelBtn = document.getElementById('cancelEditBtn');
+      const editActions = document.getElementById('profileEditActions');
+
+      if (editBtn) {
+        editBtn.addEventListener('click', function() {
+          // Enable editing
+          document.querySelectorAll('#profile input, #profile textarea').forEach(input => {
+            input.removeAttribute('readonly');
+            input.classList.add('bg-white');
+          });
+          editActions.classList.remove('hidden');
+          editBtn.classList.add('hidden');
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+          // Disable editing
+          document.querySelectorAll('#profile input, #profile textarea').forEach(input => {
+            input.setAttribute('readonly', true);
+            input.classList.remove('bg-white');
+          });
+          editActions.classList.add('hidden');
+          editBtn.classList.remove('hidden');
+        });
+      }
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+          // Save profile changes
+          alert('Profile updated successfully!');
+          // Disable editing
+          document.querySelectorAll('#profile input, #profile textarea').forEach(input => {
+            input.setAttribute('readonly', true);
+            input.classList.remove('bg-white');
+          });
+          editActions.classList.add('hidden');
+          editBtn.classList.remove('hidden');
+        });
+      }
+    }
+
+    // Initialize notification functionality
+    function initializeNotifications() {
+      const notificationBtn = document.getElementById('notificationBtn');
+      const markAllReadBtn = document.getElementById('markAllReadBtn');
+      const clearNotificationsBtn = document.getElementById('clearNotificationsBtn');
+
+      if (notificationBtn) {
+        notificationBtn.addEventListener('click', function() {
+          switchSection('notifications');
+        });
+      }
+
+      if (markAllReadBtn) {
+        markAllReadBtn.addEventListener('click', function() {
+          alert('All notifications marked as read');
+          document.getElementById('notificationBadge').classList.add('hidden');
+        });
+      }
+
+      if (clearNotificationsBtn) {
+        clearNotificationsBtn.addEventListener('click', function() {
+          if (confirm('Are you sure you want to clear all notifications?')) {
+            alert('All notifications cleared');
+            document.getElementById('notificationBadge').classList.add('hidden');
+          }
+        });
+      }
+    }
+
+    // Setup digital content search and filter
+    function setupDigitalContentSearch(content) {
+      const searchInput = document.getElementById('digitalSearch');
+      const filterButtons = document.querySelectorAll('.digital-filter-btn');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', () => filterDigitalContent(content));
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update active filter button
+          filterButtons.forEach(b => b.classList.remove('bg-purple-600', 'text-white'));
+          filterButtons.forEach(b => b.classList.add('bg-gray-200', 'text-gray-700'));
+          btn.classList.remove('bg-gray-200', 'text-gray-700');
+          btn.classList.add('bg-purple-600', 'text-white');
+
+          filterDigitalContent(content);
+        });
+      });
+    }
+
+    // Filter digital content
+    function filterDigitalContent(content) {
+      const searchTerm = document.getElementById('digitalSearch')?.value.toLowerCase() || '';
+      const activeFilter = document.querySelector('.digital-filter-btn.bg-purple-600')?.dataset.type || '';
+
+      let filteredContent = content;
+
+      // Filter by search term
+      if (searchTerm) {
+        filteredContent = filteredContent.filter(item =>
+          item.title.toLowerCase().includes(searchTerm) ||
+          item.author.toLowerCase().includes(searchTerm) ||
+          item.category.toLowerCase().includes(searchTerm) ||
+          item.description.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      // Filter by type
+      if (activeFilter && activeFilter !== 'all') {
+        filteredContent = filteredContent.filter(item => item.type === activeFilter);
+      }
+
+      // Render filtered content
+      const grid = document.getElementById('digitalContentGrid');
+      if (filteredContent.length === 0) {
+        grid.innerHTML = `
+          <div class="text-center py-8 text-gray-500 col-span-full">
+            <i class="fas fa-search text-4xl mb-4"></i>
+            <p>No content found matching your criteria.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filteredContent.map(item => `
+        <div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition cursor-pointer" onclick="openDigitalContent('${item.id}')">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium px-2 py-1 rounded-full ${getDigitalContentTypeColor(item.type)}">
+              ${item.type.toUpperCase()}
+            </span>
+            <button onclick="event.stopPropagation(); addToFavorites('${item.id}')" class="text-gray-400 hover:text-red-500">
+              <i class="fas fa-heart"></i>
+            </button>
+          </div>
+          <h4 class="font-semibold text-gray-900 mb-1">${item.title}</h4>
+          <p class="text-sm text-gray-600 mb-2">by ${item.author}</p>
+          <p class="text-xs text-gray-500 mb-2">${item.category}</p>
+          <p class="text-xs text-gray-400 mb-3">${item.description}</p>
+          <div class="flex justify-between items-center text-xs text-gray-500">
+            <span><i class="fas fa-download mr-1"></i>${item.downloads} downloads</span>
+            <span><i class="fas fa-clock mr-1"></i>${new Date(item.uploadDate).toLocaleDateString()}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Get color class for digital content type
+    function getDigitalContentTypeColor(type) {
+      const colors = {
+        'ebook': 'bg-blue-100 text-blue-800',
+        'audiobook': 'bg-green-100 text-green-800',
+        'paper': 'bg-purple-100 text-purple-800',
+        'magazine': 'bg-yellow-100 text-yellow-800',
+        'journal': 'bg-red-100 text-red-800'
+      };
+      return colors[type] || 'bg-gray-100 text-gray-800';
+    }
+
+    // Open digital content
+    function openDigitalContent(id) {
+      const content = JSON.parse(localStorage.getItem('digitalContent') || '[]');
+      const item = content.find(c => c.id == id);
+
+      if (item) {
+        // Increment download count
+        item.downloads = (item.downloads || 0) + 1;
+        localStorage.setItem('digitalContent', JSON.stringify(content));
+
+        // In a real application, this would open/download the actual file
+        alert(`Opening "${item.title}" by ${item.author}\n\nFile: ${item.fileName}\nType: ${item.type.toUpperCase()}`);
+
+        // Reload to update download count
+        loadDigitalLibraryData();
+      }
+    }
+
+    // Add to favorites
+    function addToFavorites(id) {
+      const favorites = JSON.parse(localStorage.getItem('digitalFavorites') || '[]');
+      if (!favorites.includes(id)) {
+        favorites.push(id);
+        localStorage.setItem('digitalFavorites', JSON.stringify(favorites));
+        showNotification('Added to favorites!', 'success');
+      } else {
+        showNotification('Already in favorites!', 'info');
+      }
+    }
+
+    // Update digital content counts
+    function updateDigitalContentCounts(content) {
+      const counts = {
+        ebook: 0,
+        audiobook: 0,
+        paper: 0,
+        magazine: 0,
+        journal: 0
+      };
+
+      content.forEach(item => {
+        if (counts.hasOwnProperty(item.type)) {
+          counts[item.type]++;
+        }
+      });
+
+      // Update the display
+      document.getElementById('ebooksCount').textContent = counts.ebook;
+      document.getElementById('audiobooksCount').textContent = counts.audiobook;
+      document.getElementById('papersCount').textContent = counts.paper;
+      document.getElementById('magazinesCount').textContent = counts.magazine;
+    }
+  </script>
+
+  <!-- Load student dashboard scripts -->
+  <script src="./js/student-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Book</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        select, button, input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 14px;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button:hover {
+            background-color: #3d8b40;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        .alert i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .hidden {
+            display: none;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .nav-link {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        .nav-link i {
+            margin-right: 6px;
+        }
+        .nav-link:hover {
+            color: #3d8b40;
+            transform: translateX(-3px);
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border-left-color: #4CAF50;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+    </style>
+    <!-- Load our simple API -->
+    <script src="./js/simple-api.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="page-title">Library Management System</h1>
+            <a href="staff-dashboard.html" class="nav-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="flex items-center mb-6">
+                <i class="fas fa-book-open text-green-600 text-3xl mr-3"></i>
+                <h2 class="text-2xl font-bold">Issue a Book</h2>
+            </div>
+
+            <div id="alertBox" class="hidden alert"></div>
+
+            <form id="issueBookForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label for="bookId">
+                            <i class="fas fa-book text-green-600 mr-2"></i>Select Book:
+                        </label>
+                        <select id="bookId" name="bookId" required>
+                            <option value="">-- Select a Book --</option>
+                            <!-- Books will be loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="memberId">
+                            <i class="fas fa-user text-green-600 mr-2"></i>Select Member:
+                        </label>
+                        <select id="memberId" name="memberId" required>
+                            <option value="">-- Select a Member --</option>
+                            <!-- Members will be loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="staffId">
+                            <i class="fas fa-user-tie text-green-600 mr-2"></i>Select Staff:
+                        </label>
+                        <select id="staffId" name="staffId" required>
+                            <option value="">-- Select Staff --</option>
+                            <!-- Staff will be loaded dynamically -->
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dueDate">
+                            <i class="fas fa-calendar-alt text-green-600 mr-2"></i>Due Date:
+                        </label>
+                        <input type="date" id="dueDate" name="dueDate" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="mt-6">
+                    <i class="fas fa-paper-plane mr-2"></i> Issue Book
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date for due date to today
+            const today = new Date();
+            const twoWeeksLater = new Date(today);
+            twoWeeksLater.setDate(today.getDate() + 14); // Default due date is 2 weeks from today
+
+            const dueDateInput = document.getElementById('dueDate');
+            dueDateInput.min = today.toISOString().split('T')[0];
+            dueDateInput.value = twoWeeksLater.toISOString().split('T')[0];
+
+            // Get form elements
+            const issueBookForm = document.getElementById('issueBookForm');
+            const alertBox = document.getElementById('alertBox');
+            const bookIdSelect = document.getElementById('bookId');
+            const memberIdSelect = document.getElementById('memberId');
+            const staffIdSelect = document.getElementById('staffId');
+
+            // Load data from the actual API endpoints
+            loadBooks();
+            loadMembers();
+            loadStaff();
+
+            // Handle form submission
+            issueBookForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const bookId = bookIdSelect.value;
+                const memberId = memberIdSelect.value;
+                const staffId = staffIdSelect.value;
+                const dueDate = dueDateInput.value;
+
+                if (!bookId || !memberId || !staffId || !dueDate) {
+                    showAlert('<i class="fas fa-exclamation-circle"></i> Please fill in all fields', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const submitButton = issueBookForm.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.innerHTML;
+                submitButton.innerHTML = '<div class="spinner"></div> Processing...';
+                submitButton.disabled = true;
+
+                // Create transaction data
+                const transactionData = {
+                    book_id: bookId,
+                    member_id: memberId,
+                    staffid: staffId,
+                    date_borrowed: today.toISOString().split('T')[0],
+                    due_date: dueDate
+                };
+
+                console.log('Sending transaction data:', transactionData);
+
+                // Send the data to the server
+                fetch('/api/transactions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(transactionData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 404) {
+                            throw new Error('API endpoint not found. Using fallback.');
+                        }
+                        return response.json().then(err => {
+                            throw new Error(err.message || 'Failed to issue book');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Transaction created:', data);
+                    showAlert('<i class="fas fa-check-circle"></i> Book issued successfully!', 'success');
+
+                    // Reset form
+                    issueBookForm.reset();
+                    dueDateInput.value = twoWeeksLater.toISOString().split('T')[0];
+
+                    // Reload books to update availability
+                    loadBooks();
+                })
+                .catch(error => {
+                    console.error('Error issuing book:', error);
+
+                    // If API fails, use the fallback
+                    if (error.message.includes('API endpoint not found')) {
+                        // Use our simple API as fallback
+                        LibraryAPI.issueBook(bookId, memberId, staffId, dueDate)
+                            .then(transaction => {
+                                console.log('Transaction created using fallback:', transaction);
+                                showAlert('<i class="fas fa-check-circle"></i> Book issued successfully! (Using fallback)', 'success');
+
+                                // Reset form
+                                issueBookForm.reset();
+                                dueDateInput.value = twoWeeksLater.toISOString().split('T')[0];
+
+                                // Reload books to update availability
+                                loadBooks();
+                            })
+                            .catch(fallbackError => {
+                                console.error('Fallback error:', fallbackError);
+                                showAlert('<i class="fas fa-exclamation-triangle"></i> ' + (fallbackError.message || 'Failed to issue book'), 'error');
+                            });
+                    } else {
+                        showAlert('<i class="fas fa-exclamation-triangle"></i> ' + (error.message || 'Failed to issue book'), 'error');
+                    }
+                })
+                .finally(() => {
+                    // Restore button state
+                    submitButton.innerHTML = originalButtonText;
+                    submitButton.disabled = false;
+                });
+            });
+
+            // Function to load books
+            function loadBooks() {
+                // Clear existing options
+                bookIdSelect.innerHTML = '<option value="">-- Select a Book --</option>';
+
+                // Show loading option
+                const loadingOption = document.createElement('option');
+                loadingOption.textContent = 'Loading books...';
+                loadingOption.disabled = true;
+                bookIdSelect.appendChild(loadingOption);
+
+                // Try to get books from the actual API
+                fetch('/api/books')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch books from API');
+                        }
+                        return response.json();
+                    })
+                    .then(books => {
+                        // Remove loading option
+                        bookIdSelect.removeChild(loadingOption);
+
+                        // Filter available books
+                        const availableBooks = books.filter(book => book.availability);
+
+                        if (availableBooks.length === 0) {
+                            const noOption = document.createElement('option');
+                            noOption.textContent = 'No available books';
+                            noOption.disabled = true;
+                            bookIdSelect.appendChild(noOption);
+                        } else {
+                            // Add books to select
+                            availableBooks.forEach(book => {
+                                const option = document.createElement('option');
+                                option.value = book.bookId || book.book_id;  // Handle both field names
+                                option.textContent = `${book.title} - ${book.author}`;
+                                bookIdSelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading books from API:', error);
+
+                        // Use fallback data from simple API
+                        LibraryAPI.getBooks()
+                            .then(books => {
+                                // Remove loading option
+                                bookIdSelect.removeChild(loadingOption);
+
+                                // Filter available books
+                                const availableBooks = books.filter(book => book.availability);
+
+                                if (availableBooks.length === 0) {
+                                    const noOption = document.createElement('option');
+                                    noOption.textContent = 'No available books';
+                                    noOption.disabled = true;
+                                    bookIdSelect.appendChild(noOption);
+                                } else {
+                                    // Add books to select
+                                    availableBooks.forEach(book => {
+                                        const option = document.createElement('option');
+                                        option.value = book.id;
+                                        option.textContent = `${book.title} - ${book.author}`;
+                                        bookIdSelect.appendChild(option);
+                                    });
+                                }
+                            })
+                            .catch(fallbackError => {
+                                console.error('Error loading books from fallback:', fallbackError);
+                                bookIdSelect.innerHTML = '<option value="">Error loading books</option>';
+                            });
+                    });
+            }
+
+            // Function to load members
+            function loadMembers() {
+                // Clear existing options
+                memberIdSelect.innerHTML = '<option value="">-- Select a Member --</option>';
+
+                // Show loading option
+                const loadingOption = document.createElement('option');
+                loadingOption.textContent = 'Loading members...';
+                loadingOption.disabled = true;
+                memberIdSelect.appendChild(loadingOption);
+
+                // Try to get members from the actual API
+                fetch('/api/members')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch members from API');
+                        }
+                        return response.json();
+                    })
+                    .then(members => {
+                        // Remove loading option
+                        memberIdSelect.removeChild(loadingOption);
+
+                        if (members.length === 0) {
+                            const noOption = document.createElement('option');
+                            noOption.textContent = 'No members found';
+                            noOption.disabled = true;
+                            memberIdSelect.appendChild(noOption);
+                        } else {
+                            // Add members to select
+                            members.forEach(member => {
+                                const option = document.createElement('option');
+                                option.value = member.memberid || member.member_id;  // Handle both field names
+                                option.textContent = `${member.name} - ${member.email || 'No email'}`;
+                                memberIdSelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading members from API:', error);
+
+                        // Use fallback data from simple API
+                        LibraryAPI.getMembers()
+                            .then(members => {
+                                // Remove loading option
+                                memberIdSelect.removeChild(loadingOption);
+
+                                if (members.length === 0) {
+                                    const noOption = document.createElement('option');
+                                    noOption.textContent = 'No members found';
+                                    noOption.disabled = true;
+                                    memberIdSelect.appendChild(noOption);
+                                } else {
+                                    // Add members to select
+                                    members.forEach(member => {
+                                        const option = document.createElement('option');
+                                        option.value = member.id;
+                                        option.textContent = `${member.name} - ${member.email}`;
+                                        memberIdSelect.appendChild(option);
+                                    });
+                                }
+                            })
+                            .catch(fallbackError => {
+                                console.error('Error loading members from fallback:', fallbackError);
+                                memberIdSelect.innerHTML = '<option value="">Error loading members</option>';
+                            });
+                    });
+            }
+
+            // Function to load staff
+            function loadStaff() {
+                // Clear existing options
+                staffIdSelect.innerHTML = '<option value="">-- Select Staff --</option>';
+
+                // Show loading option
+                const loadingOption = document.createElement('option');
+                loadingOption.textContent = 'Loading staff...';
+                loadingOption.disabled = true;
+                staffIdSelect.appendChild(loadingOption);
+
+                // Try to get staff from the actual API
+                fetch('/api/staff')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch staff from API');
+                        }
+                        return response.json();
+                    })
+                    .then(staffList => {
+                        // Remove loading option
+                        staffIdSelect.removeChild(loadingOption);
+
+                        if (staffList.length === 0) {
+                            const noOption = document.createElement('option');
+                            noOption.textContent = 'No staff found';
+                            noOption.disabled = true;
+                            staffIdSelect.appendChild(noOption);
+                        } else {
+                            // Add staff to select
+                            staffList.forEach(staff => {
+                                const option = document.createElement('option');
+                                option.value = staff.staffid || staff.staff_id;  // Handle both field names
+                                option.textContent = `${staff.name} - ${staff.role || 'Staff'}`;
+                                staffIdSelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading staff from API:', error);
+
+                        // Use fallback data from simple API
+                        LibraryAPI.getStaff()
+                            .then(staffList => {
+                                // Remove loading option
+                                staffIdSelect.removeChild(loadingOption);
+
+                                if (staffList.length === 0) {
+                                    const noOption = document.createElement('option');
+                                    noOption.textContent = 'No staff found';
+                                    noOption.disabled = true;
+                                    staffIdSelect.appendChild(noOption);
+                                } else {
+                                    // Add staff to select
+                                    staffList.forEach(staff => {
+                                        const option = document.createElement('option');
+                                        option.value = staff.id;
+                                        option.textContent = `${staff.name} - ${staff.role}`;
+                                        staffIdSelect.appendChild(option);
+                                    });
+                                }
+                            })
+                            .catch(fallbackError => {
+                                console.error('Error loading staff from fallback:', fallbackError);
+                                staffIdSelect.innerHTML = '<option value="">Error loading staff</option>';
+                            });
+                    });
+            }
+
+            // Function to show alerts
+            function showAlert(message, type) {
+                alertBox.innerHTML = message;
+                alertBox.classList.remove('hidden', 'alert-success', 'alert-error');
+                alertBox.classList.add(type === 'success' ? 'alert-success' : 'alert-error');
+
+                // Hide the alert after 5 seconds
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -13,35 +13,39 @@ import pkg1.library.BookRepo;
 public class BookService {
 	@Autowired
 	private BookRepo bookRepo;
-	
+
 	public List<BookEntity> searchBooks(String keyword){
 		return bookRepo.searchBooks(keyword);
 	}
-	
+
 	public List<BookEntity> getAllBooks(){
 		return bookRepo.findAll();
 	}
-	
+
 	public Optional<BookEntity> getBookById(Long id) {
 		return bookRepo.findById(id);
 	}
-	
+
 	public BookEntity addBook(BookEntity book) {
+		// Set availability to true by default for new books
+		if (book.getBookId() == null) {  // Only for new books (not updates)
+			book.setAvailability(true);
+		}
 		return bookRepo.save(book);
 	}
-	
+
 	public BookEntity updateBookEntity(Long id, BookEntity book) {
 		book.setBookId(id);
 		return bookRepo.save(book);
-		
+
 	}
-	
+
 	public void deleteBook(Long id) {
 		bookRepo.deleteById(id);
-		
+
 	}
 	}
-	
-	
-	
-	
+
+
+
+

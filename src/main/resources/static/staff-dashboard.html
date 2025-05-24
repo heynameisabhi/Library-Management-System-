@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Staff Dashboard • JnanaTattva</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex">
 
@@ -13,6 +15,7 @@
     <h1 class="text-2xl font-bold">Staff Dashboard</h1>
 	<nav class="flex flex-col space-y-2">
 	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('bookManagement', this)">📚 Book Management</button>
+	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('digitalContent', this)">💻 Digital Content</button>
 	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('memberManagement', this)">👥 Member Management</button>
 	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('issuedBooks', this)">📖 Issued Books</button>
 	  <button class="nav-link text-left hover:bg-indigo-700 p-2 rounded" onclick="showSection('reports', this)">📊 Reports</button>
@@ -52,52 +55,542 @@
       </div>
     </section>
 
+    <!-- Digital Content Management Section -->
+    <section id="digitalContent" class="section hidden">
+      <h2 class="text-2xl font-semibold mb-4">💻 Digital Content Management</h2>
+
+      <!-- Upload Digital Content Form -->
+      <div class="bg-white p-6 rounded shadow mb-6">
+        <h3 class="text-lg font-semibold mb-4">Upload Digital Content</h3>
+        <form id="uploadDigitalContentForm" class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Content Type</label>
+              <select id="digitalContentType" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="">Select Content Type</option>
+                <option value="ebook">E-Book</option>
+                <option value="audiobook">Audiobook</option>
+                <option value="paper">Research Paper</option>
+                <option value="magazine">Magazine</option>
+                <option value="journal">Journal</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <input type="text" id="digitalTitle" placeholder="Content Title" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Author/Creator</label>
+              <input type="text" id="digitalAuthor" placeholder="Author or Creator" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <input type="text" id="digitalCategory" placeholder="Category/Genre" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">File Upload</label>
+              <input type="file" id="digitalFile" accept=".pdf,.epub,.mp3,.mp4,.doc,.docx" required class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Cover Image</label>
+              <input type="file" id="digitalCover" accept=".jpg,.jpeg,.png,.gif" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+            <textarea id="digitalDescription" placeholder="Content description..." rows="3" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+          </div>
+          <div class="flex gap-4">
+            <button type="submit" class="bg-indigo-600 text-white py-3 px-6 rounded-lg hover:bg-indigo-700 transition">
+              <i class="fas fa-upload mr-2"></i>Upload Content
+            </button>
+            <button type="button" id="previewDigitalContent" class="bg-gray-600 text-white py-3 px-6 rounded-lg hover:bg-gray-700 transition">
+              <i class="fas fa-eye mr-2"></i>Preview
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Digital Content Library -->
+      <div class="bg-white p-6 rounded shadow">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold">Digital Content Library</h3>
+          <div class="flex gap-2">
+            <select id="digitalContentFilter" class="p-2 border rounded-lg">
+              <option value="">All Types</option>
+              <option value="ebook">E-Books</option>
+              <option value="audiobook">Audiobooks</option>
+              <option value="paper">Research Papers</option>
+              <option value="magazine">Magazines</option>
+              <option value="journal">Journals</option>
+            </select>
+            <input type="text" id="digitalContentSearch" placeholder="Search digital content..." class="p-2 border rounded-lg">
+          </div>
+        </div>
+
+        <div id="digitalContentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Digital content will be populated here -->
+          <div class="text-center py-8 text-gray-500 col-span-full">
+            <i class="fas fa-cloud-upload-alt text-4xl mb-4"></i>
+            <p>No digital content uploaded yet. Upload your first digital content above!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
 	<!-- Member Management -->
 	<section id="memberManagement" class="section hidden">
-	  <h2 class="text-2xl font-semibold mb-4">👥 Member Management</h2>
+	  <h2 class="text-2xl font-semibold mb-6">👥 Member Management</h2>
 
-	  <!-- Add Member Form -->
-	  <form id="addMemberForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-	    <input type="text" name="name" id="name" placeholder="Name" required class="p-2 border rounded" />
-	    <input type="text" name="address" id="address" placeholder="Address" required class="p-2 border rounded" />
-	    <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" maxlength="10" required class="p-2 border rounded" />
-	    <input type="email" name="email" id="email" placeholder="Email" required class="p-2 border rounded" />
-	    <select name="membershipType" id="membershipType" required class="p-2 border rounded">
-	      <option value="">Select Membership Type</option>
-	      <option value="REGULAR">Regular</option>
-	      <option value="PREMIUM">Premium</option>
-	      <option value="STUDENT">Student</option>
-	    </select>
-	    <button type="submit" class="col-span-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-500">Add Member</button>
-	  </form>
+	  <!-- Member Statistics Cards -->
+	  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+	    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+	      <div class="flex items-center justify-between">
+	        <div>
+	          <p class="text-blue-600 text-sm font-medium">Total Members</p>
+	          <p id="totalMembersCount" class="text-2xl font-bold text-blue-800">0</p>
+	        </div>
+	        <i class="fas fa-users text-blue-500 text-2xl"></i>
+	      </div>
+	    </div>
 
-	  <!-- Member Table -->
-	  <table class="w-full table-auto border-collapse bg-white">
-	    <thead>
-	      <tr class="bg-gray-200">
-	        <th class="p-2 border">Name</th>
-	        <th class="p-2 border">Address</th>
-	        <th class="p-2 border">Phone</th>
-	        <th class="p-2 border">Email</th>
-	        <th class="p-2 border">Type</th>
-	        <th class="p-2 border">Actions</th>
-	      </tr>
-	    </thead>
-	    <tbody name="memberTableBody" id="memberTableBody">
-	      <!-- Rows will be dynamically inserted here -->
-	    </tbody>
-	  </table>
+	    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+	      <div class="flex items-center justify-between">
+	        <div>
+	          <p class="text-green-600 text-sm font-medium">Active Members</p>
+	          <p id="activeMembersCount" class="text-2xl font-bold text-green-800">0</p>
+	        </div>
+	        <i class="fas fa-user-check text-green-500 text-2xl"></i>
+	      </div>
+	    </div>
+
+	    <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+	      <div class="flex items-center justify-between">
+	        <div>
+	          <p class="text-purple-600 text-sm font-medium">Premium Members</p>
+	          <p id="premiumMembersCount" class="text-2xl font-bold text-purple-800">0</p>
+	        </div>
+	        <i class="fas fa-crown text-purple-500 text-2xl"></i>
+	      </div>
+	    </div>
+
+	    <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+	      <div class="flex items-center justify-between">
+	        <div>
+	          <p class="text-orange-600 text-sm font-medium">Student Members</p>
+	          <p id="studentMembersCount" class="text-2xl font-bold text-orange-800">0</p>
+	        </div>
+	        <i class="fas fa-graduation-cap text-orange-500 text-2xl"></i>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- Member Actions Bar -->
+	  <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+	    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+	      <div class="flex items-center gap-4">
+	        <button id="addMemberBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center">
+	          <i class="fas fa-plus mr-2"></i>Add New Member
+	        </button>
+	        <button id="refreshMembersBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center">
+	          <i class="fas fa-sync-alt mr-2"></i>Refresh
+	        </button>
+	      </div>
+
+	      <div class="flex items-center gap-4">
+	        <select id="memberTypeFilter" class="p-2 border rounded-lg">
+	          <option value="">All Types</option>
+	          <option value="REGULAR">Regular</option>
+	          <option value="PREMIUM">Premium</option>
+	          <option value="STUDENT">Student</option>
+	        </select>
+	        <input type="text" id="searchBar" placeholder="Search members..." class="p-2 border rounded-lg w-64" />
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- Add/Edit Member Modal -->
+	  <div id="memberModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+	    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4">
+	      <div class="flex justify-between items-center mb-4">
+	        <h3 id="modalTitle" class="text-lg font-semibold">Add New Member</h3>
+	        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+	          <i class="fas fa-times text-xl"></i>
+	        </button>
+	      </div>
+
+	      <form id="addMemberForm" class="space-y-4">
+	        <div>
+	          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+	          <input type="text" name="name" id="name" placeholder="Enter full name" required class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+	        </div>
+
+	        <div>
+	          <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+	          <textarea name="address" id="address" placeholder="Enter address" required class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-20 resize-none"></textarea>
+	        </div>
+
+	        <div>
+	          <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+	          <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="Enter 10-digit phone number" maxlength="10" required class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+	        </div>
+
+	        <div>
+	          <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+	          <input type="email" name="email" id="email" placeholder="Enter email address" required class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+	        </div>
+
+	        <div>
+	          <label class="block text-sm font-medium text-gray-700 mb-1">Membership Type</label>
+	          <select name="membershipType" id="membershipType" required class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+	            <option value="">Select Membership Type</option>
+	            <option value="REGULAR">Regular - Standard access</option>
+	            <option value="PREMIUM">Premium - Extended privileges</option>
+	            <option value="STUDENT">Student - Discounted rates</option>
+	          </select>
+	        </div>
+
+	        <div class="flex gap-3 pt-4">
+	          <button type="submit" id="submitMemberBtn" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+	            <i class="fas fa-save mr-2"></i>Add Member
+	          </button>
+	          <button type="button" id="cancelMemberBtn" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition">
+	            Cancel
+	          </button>
+	        </div>
+	      </form>
+	    </div>
+	  </div>
+
+	  <!-- Members Table -->
+	  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+	    <div class="overflow-x-auto">
+	      <table class="w-full table-auto">
+	        <thead class="bg-gray-50">
+	          <tr>
+	            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Member</th>
+	            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+	            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Membership</th>
+	            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+	            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+	          </tr>
+	        </thead>
+	        <tbody name="memberTableBody" id="memberTableBody" class="bg-white divide-y divide-gray-200">
+	          <!-- Rows will be dynamically inserted here -->
+	        </tbody>
+	      </table>
+	    </div>
+
+	    <!-- Empty State -->
+	    <div id="emptyMembersState" class="hidden text-center py-12">
+	      <i class="fas fa-users text-gray-300 text-6xl mb-4"></i>
+	      <h3 class="text-lg font-medium text-gray-900 mb-2">No members found</h3>
+	      <p class="text-gray-500 mb-4">Get started by adding your first member to the library.</p>
+	      <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" onclick="document.getElementById('addMemberBtn').click()">
+	        <i class="fas fa-plus mr-2"></i>Add First Member
+	      </button>
+	    </div>
+	  </div>
+
+	  <!-- Member Details Modal -->
+	  <div id="memberDetailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+	    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg mx-4">
+	      <div class="flex justify-between items-center mb-4">
+	        <h3 class="text-lg font-semibold">Member Details</h3>
+	        <button id="closeMemberDetailsBtn" class="text-gray-500 hover:text-gray-700">
+	          <i class="fas fa-times text-xl"></i>
+	        </button>
+	      </div>
+
+	      <div id="memberDetailsContent" class="space-y-4">
+	        <!-- Member details will be populated here -->
+	      </div>
+
+	      <div class="flex gap-3 pt-4">
+	        <button id="editMemberFromDetailsBtn" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+	          <i class="fas fa-edit mr-2"></i>Edit Member
+	        </button>
+	        <button id="closeMemberDetailsBtn2" class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition">
+	          Close
+	        </button>
+	      </div>
+	    </div>
+	  </div>
 	</section>
 
     <!-- Issued Books Section -->
     <section id="issuedBooks" class="section hidden">
-      <!-- This section will be populated by staff-transactions.js -->
+      <h2 class="text-2xl font-semibold mb-4">📖 Issued Books</h2>
+
+      <!-- Issue Book Button -->
+      <div class="bg-white p-4 rounded shadow mb-6">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-semibold">Issue a Book</h3>
+          <a href="issue-book.html" class="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-500">
+            Open Issue Book Form
+          </a>
+        </div>
+        <p class="text-gray-600 mt-2">
+          Click the button above to open a dedicated form for issuing books to members.
+        </p>
+      </div>
+
+      <!-- Transaction History Card -->
+      <div class="bg-white p-4 rounded shadow">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-semibold">Transaction History</h3>
+          <a href="transactions.html" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-500">
+            View All Transactions
+          </a>
+        </div>
+        <p class="text-gray-600 mt-2">
+          View and manage all book transactions, including issuing and returning books.
+        </p>
+        <div class="mt-4">
+          <div class="flex space-x-4">
+            <div class="bg-green-100 p-3 rounded flex-1 text-center">
+              <p class="text-green-800 font-bold text-xl">5</p>
+              <p class="text-green-600">Books Issued</p>
+            </div>
+            <div class="bg-blue-100 p-3 rounded flex-1 text-center">
+              <p class="text-blue-800 font-bold text-xl">3</p>
+              <p class="text-blue-600">Books Returned</p>
+            </div>
+            <div class="bg-yellow-100 p-3 rounded flex-1 text-center">
+              <p class="text-yellow-800 font-bold text-xl">2</p>
+              <p class="text-yellow-600">Overdue Books</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Reports Placeholder -->
+    <!-- Reports Section -->
     <section name="report" id="reports" class="section hidden">
-      <h2 class="text-2xl font-semibold mb-4">📊 Reports</h2>
-      <p class="text-gray-600">Coming soon...</p>
+      <h2 class="text-2xl font-semibold mb-4">📊 Reports & Analytics</h2>
+
+      <!-- Loading Indicator -->
+      <div id="reportsLoadingIndicator" class="hidden bg-white p-6 rounded-lg shadow-md text-center">
+        <i class="fas fa-spinner fa-spin text-blue-600 text-3xl mb-4"></i>
+        <p class="text-gray-700">Generating reports...</p>
+      </div>
+
+      <!-- Report Navigation -->
+      <div class="mb-6">
+        <div class="flex flex-wrap gap-4">
+          <button class="report-tab active bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition" data-report="statistics">
+            <i class="fas fa-chart-pie mr-2"></i>Statistics
+          </button>
+          <button class="report-tab bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition" data-report="books">
+            <i class="fas fa-book mr-2"></i>Books
+          </button>
+          <button class="report-tab bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition" data-report="members">
+            <i class="fas fa-users mr-2"></i>Members
+          </button>
+          <button class="report-tab bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition" data-report="transactions">
+            <i class="fas fa-exchange-alt mr-2"></i>Transactions
+          </button>
+          <button class="report-tab bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition" data-report="fines">
+            <i class="fas fa-dollar-sign mr-2"></i>Fines
+          </button>
+          <button id="refreshReportsBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition">
+            <i class="fas fa-sync-alt mr-2"></i>Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Report Content -->
+      <div id="reportContent" class="space-y-6">
+        <!-- Statistics Report -->
+        <div id="statisticsReport" class="report-section">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <i class="fas fa-chart-pie text-blue-600 mr-3"></i>
+              Library Statistics
+            </h3>
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-blue-600 text-sm font-medium">Total Books</p>
+                    <p id="totalBooks" class="text-2xl font-bold text-blue-800">-</p>
+                  </div>
+                  <i class="fas fa-book text-blue-500 text-2xl"></i>
+                </div>
+              </div>
+
+              <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-green-600 text-sm font-medium">Total Members</p>
+                    <p id="totalMembers" class="text-2xl font-bold text-green-800">-</p>
+                  </div>
+                  <i class="fas fa-users text-green-500 text-2xl"></i>
+                </div>
+              </div>
+
+              <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-purple-600 text-sm font-medium">Active Transactions</p>
+                    <p id="activeTransactions" class="text-2xl font-bold text-purple-800">-</p>
+                  </div>
+                  <i class="fas fa-exchange-alt text-purple-500 text-2xl"></i>
+                </div>
+              </div>
+
+              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-red-600 text-sm font-medium">Overdue Books</p>
+                    <p id="overdueBooks" class="text-2xl font-bold text-red-800">-</p>
+                  </div>
+                  <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Book Availability</h4>
+                <div class="relative h-64">
+                  <canvas id="bookAvailabilityChart"></canvas>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Transaction Status</h4>
+                <div class="relative h-64">
+                  <canvas id="transactionStatusChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Books Report -->
+        <div id="booksReport" class="report-section hidden">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <i class="fas fa-book text-green-600 mr-3"></i>
+              Books Report
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Books by Category</h4>
+                <div class="relative h-64">
+                  <canvas id="booksCategoryChart"></canvas>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Most Popular Books</h4>
+                <div id="popularBooksList" class="space-y-2 max-h-64 overflow-y-auto">
+                  <!-- Popular books will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Members Report -->
+        <div id="membersReport" class="report-section hidden">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <i class="fas fa-users text-purple-600 mr-3"></i>
+              Members Report
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Members by Type</h4>
+                <div class="relative h-64">
+                  <canvas id="memberTypeChart"></canvas>
+                </div>
+              </div>
+
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold text-gray-800 mb-4">Most Active Members</h4>
+                <div id="activeMembersList" class="space-y-2 max-h-64 overflow-y-auto">
+                  <!-- Active members will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transactions Report -->
+        <div id="transactionsReport" class="report-section hidden">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <i class="fas fa-exchange-alt text-orange-600 mr-3"></i>
+              Transactions Report
+            </h3>
+
+            <div class="grid grid-cols-1 gap-6">
+              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                <h4 class="text-lg font-semibold text-red-800 mb-4">Overdue Books</h4>
+                <div id="overdueTransactionsList" class="space-y-2">
+                  <!-- Overdue transactions will be populated here -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fines Report -->
+        <div id="finesReport" class="report-section hidden">
+          <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+              <i class="fas fa-dollar-sign text-yellow-600 mr-3"></i>
+              Fines Report
+            </h3>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-yellow-600 text-sm font-medium">Total Fines</p>
+                    <p id="totalFinesAmount" class="text-2xl font-bold text-yellow-800">$0</p>
+                  </div>
+                  <i class="fas fa-coins text-yellow-500 text-2xl"></i>
+                </div>
+              </div>
+
+              <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-green-600 text-sm font-medium">Paid Fines</p>
+                    <p id="paidFinesAmount" class="text-2xl font-bold text-green-800">$0</p>
+                  </div>
+                  <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                </div>
+              </div>
+
+              <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-red-600 text-sm font-medium">Outstanding</p>
+                    <p id="outstandingFinesAmount" class="text-2xl font-bold text-red-800">$0</p>
+                  </div>
+                  <i class="fas fa-exclamation-circle text-red-500 text-2xl"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h4 class="text-lg font-semibold text-gray-800 mb-4">Outstanding Fines</h4>
+              <div id="outstandingFinesList" class="space-y-2">
+                <!-- Outstanding fines will be populated here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -106,19 +599,260 @@
     // These functions are now defined in the module script below
   </script>
 
-  <script type="module" src="js/staff-books.js"></script>
-  <script type="module">
-    import { setupMemberManagement } from './js/staff-members.js';
-    import { setupTransactionManagement } from './js/staff-transactions.js';
+  <!-- Load scripts -->
+  <script>
+    // Global variables to track initialization status
+    window.memberSetupDone = false;
+    window.digitalContentSetupDone = false;
+    window.transactionSetupDone = false;
+    window.reportsSetupDone = false;
 
-    window.onload = () => {
-      const sectionId = localStorage.getItem('activeSection') || 'bookManagement';
-      const buttonToClick = [...document.querySelectorAll('.nav-link')]
-        .find(btn => btn.getAttribute('onclick').includes(sectionId));
-      if (buttonToClick) buttonToClick.click();
+    // Function to load and initialize transaction management
+    window.initializeTransactions = function() {
+      console.log("Initializing transactions...");
+      if (!window.transactionSetupDone) {
+        try {
+          // Load the transaction script
+          const script = document.createElement('script');
+          script.src = './js/staff-transactions.js';
+          document.body.appendChild(script);
+
+          // Load the issue book script
+          const issueBookScript = document.createElement('script');
+          issueBookScript.src = './js/issue-book.js';
+          document.body.appendChild(issueBookScript);
+
+          window.transactionSetupDone = true;
+          console.log("Transaction setup completed successfully");
+        } catch (error) {
+          console.error("Error initializing transactions:", error);
+        }
+      }
     };
 
-    window.showSection = (sectionId, clickedBtn) => {
+    // Function to load and initialize digital content management
+    window.initializeDigitalContent = function() {
+      console.log("Initializing digital content management...");
+      if (!window.digitalContentSetupDone) {
+        try {
+          // Initialize digital content upload form
+          const uploadForm = document.getElementById('uploadDigitalContentForm');
+          if (uploadForm) {
+            uploadForm.addEventListener('submit', handleDigitalContentUpload);
+          }
+
+          // Initialize search and filter
+          const searchInput = document.getElementById('digitalContentSearch');
+          const filterSelect = document.getElementById('digitalContentFilter');
+
+          if (searchInput) {
+            searchInput.addEventListener('input', filterDigitalContent);
+          }
+
+          if (filterSelect) {
+            filterSelect.addEventListener('change', filterDigitalContent);
+          }
+
+          // Load existing digital content
+          loadDigitalContent();
+
+          window.digitalContentSetupDone = true;
+          console.log("Digital content setup completed successfully");
+        } catch (error) {
+          console.error("Error initializing digital content:", error);
+        }
+      }
+    };
+
+    // Handle digital content upload
+    function handleDigitalContentUpload(e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const contentType = document.getElementById('digitalContentType').value;
+      const title = document.getElementById('digitalTitle').value;
+      const author = document.getElementById('digitalAuthor').value;
+      const category = document.getElementById('digitalCategory').value;
+      const description = document.getElementById('digitalDescription').value;
+      const file = document.getElementById('digitalFile').files[0];
+      const cover = document.getElementById('digitalCover').files[0];
+
+      // For now, we'll simulate the upload and store in localStorage
+      // In a real application, this would upload to a server
+      const digitalContent = {
+        id: Date.now(),
+        type: contentType,
+        title: title,
+        author: author,
+        category: category,
+        description: description,
+        fileName: file ? file.name : '',
+        coverName: cover ? cover.name : '',
+        uploadDate: new Date().toISOString(),
+        downloads: 0
+      };
+
+      // Get existing content from localStorage
+      let existingContent = JSON.parse(localStorage.getItem('digitalContent') || '[]');
+      existingContent.push(digitalContent);
+      localStorage.setItem('digitalContent', JSON.stringify(existingContent));
+
+      // Reset form
+      document.getElementById('uploadDigitalContentForm').reset();
+
+      // Reload content display
+      loadDigitalContent();
+
+      alert('Digital content uploaded successfully!');
+    }
+
+    // Load and display digital content
+    function loadDigitalContent() {
+      const grid = document.getElementById('digitalContentGrid');
+      const content = JSON.parse(localStorage.getItem('digitalContent') || '[]');
+
+      if (content.length === 0) {
+        grid.innerHTML = `
+          <div class="text-center py-8 text-gray-500 col-span-full">
+            <i class="fas fa-cloud-upload-alt text-4xl mb-4"></i>
+            <p>No digital content uploaded yet. Upload your first digital content above!</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = content.map(item => `
+        <div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium px-2 py-1 rounded-full ${getTypeColor(item.type)}">
+              ${item.type.toUpperCase()}
+            </span>
+            <button onclick="deleteDigitalContent(${item.id})" class="text-red-500 hover:text-red-700">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <h4 class="font-semibold text-gray-900 mb-1">${item.title}</h4>
+          <p class="text-sm text-gray-600 mb-2">by ${item.author}</p>
+          <p class="text-xs text-gray-500 mb-2">${item.category}</p>
+          <p class="text-xs text-gray-400 mb-3">${item.description}</p>
+          <div class="flex justify-between items-center text-xs text-gray-500">
+            <span>${new Date(item.uploadDate).toLocaleDateString()}</span>
+            <span>${item.downloads} downloads</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filter digital content
+    function filterDigitalContent() {
+      const searchTerm = document.getElementById('digitalContentSearch').value.toLowerCase();
+      const filterType = document.getElementById('digitalContentFilter').value;
+      const content = JSON.parse(localStorage.getItem('digitalContent') || '[]');
+
+      let filteredContent = content;
+
+      if (searchTerm) {
+        filteredContent = filteredContent.filter(item =>
+          item.title.toLowerCase().includes(searchTerm) ||
+          item.author.toLowerCase().includes(searchTerm) ||
+          item.category.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      if (filterType) {
+        filteredContent = filteredContent.filter(item => item.type === filterType);
+      }
+
+      const grid = document.getElementById('digitalContentGrid');
+      if (filteredContent.length === 0) {
+        grid.innerHTML = `
+          <div class="text-center py-8 text-gray-500 col-span-full">
+            <i class="fas fa-search text-4xl mb-4"></i>
+            <p>No content found matching your criteria.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filteredContent.map(item => `
+        <div class="bg-white border rounded-lg p-4 shadow-sm hover:shadow-md transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium px-2 py-1 rounded-full ${getTypeColor(item.type)}">
+              ${item.type.toUpperCase()}
+            </span>
+            <button onclick="deleteDigitalContent(${item.id})" class="text-red-500 hover:text-red-700">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <h4 class="font-semibold text-gray-900 mb-1">${item.title}</h4>
+          <p class="text-sm text-gray-600 mb-2">by ${item.author}</p>
+          <p class="text-xs text-gray-500 mb-2">${item.category}</p>
+          <p class="text-xs text-gray-400 mb-3">${item.description}</p>
+          <div class="flex justify-between items-center text-xs text-gray-500">
+            <span>${new Date(item.uploadDate).toLocaleDateString()}</span>
+            <span>${item.downloads} downloads</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Delete digital content
+    function deleteDigitalContent(id) {
+      if (confirm('Are you sure you want to delete this digital content?')) {
+        let content = JSON.parse(localStorage.getItem('digitalContent') || '[]');
+        content = content.filter(item => item.id !== id);
+        localStorage.setItem('digitalContent', JSON.stringify(content));
+        loadDigitalContent();
+      }
+    }
+
+    // Get color class for content type
+    function getTypeColor(type) {
+      const colors = {
+        'ebook': 'bg-blue-100 text-blue-800',
+        'audiobook': 'bg-green-100 text-green-800',
+        'paper': 'bg-purple-100 text-purple-800',
+        'magazine': 'bg-yellow-100 text-yellow-800',
+        'journal': 'bg-red-100 text-red-800'
+      };
+      return colors[type] || 'bg-gray-100 text-gray-800';
+    }
+
+    // Function to load and initialize member management
+    window.initializeMembers = function() {
+      console.log("Initializing members...");
+      if (!window.memberSetupDone) {
+        try {
+          if (typeof window.setupMemberManagement === 'function') {
+            window.setupMemberManagement();
+            window.memberSetupDone = true;
+            console.log("Member setup completed successfully");
+          } else {
+            console.error("setupMemberManagement function not found!");
+          }
+        } catch (error) {
+          console.error("Error initializing members:", error);
+        }
+      }
+    };
+
+    // Function to initialize reports
+    window.initializeReports = function() {
+      console.log("Initializing reports...");
+      if (!window.reportsSetupDone) {
+        try {
+          window.setupReports();
+          window.reportsSetupDone = true;
+          console.log("Reports setup completed successfully");
+        } catch (error) {
+          console.error("Error initializing reports:", error);
+        }
+      }
+    };
+
+    // Navigation function
+    window.showSection = function(sectionId, clickedBtn) {
+      console.log("Showing section:", sectionId);
       document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
       document.getElementById(sectionId).classList.remove('hidden');
 
@@ -129,23 +863,462 @@
 
       localStorage.setItem('activeSection', sectionId);
 
-      // Initialize scripts only if not yet loaded
-      if (sectionId === 'memberManagement' && !window.memberSetupDone) {
-        setupMemberManagement();
-        window.memberSetupDone = true;
+      // Initialize scripts based on section
+      if (sectionId === 'memberManagement') {
+        window.initializeMembers();
       }
 
-      if (sectionId === 'issuedBooks' && !window.transactionSetupDone) {
-        setupTransactionManagement();
-        window.transactionSetupDone = true;
+      if (sectionId === 'digitalContent') {
+        window.initializeDigitalContent();
+      }
+
+      if (sectionId === 'issuedBooks') {
+        window.initializeTransactions();
+      }
+
+      if (sectionId === 'reports') {
+        window.initializeReports();
       }
     };
 
-    window.logout = () => {
+    // Logout function
+    window.logout = function() {
       window.location.href = "login.html";
     };
+
+    // On page load, show the active section
+    window.onload = function() {
+      const sectionId = localStorage.getItem('activeSection') || 'bookManagement';
+      const buttonToClick = [...document.querySelectorAll('.nav-link')]
+        .find(btn => btn.getAttribute('onclick').includes(sectionId));
+      if (buttonToClick) buttonToClick.click();
+    };
+
+    // Reports functionality
+    window.setupReports = function() {
+      // Global variables for reports
+      let reportsData = {};
+      let charts = {};
+
+      // DOM elements
+      const reportsLoadingIndicator = document.getElementById('reportsLoadingIndicator');
+      const refreshReportsBtn = document.getElementById('refreshReportsBtn');
+      const reportTabs = document.querySelectorAll('.report-tab');
+      const reportSections = document.querySelectorAll('.report-section');
+
+      // Setup event listeners
+      refreshReportsBtn.addEventListener('click', loadReports);
+
+      reportTabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          const reportType = this.dataset.report;
+          switchReport(reportType);
+        });
+      });
+
+      // Load reports automatically when reports section is shown
+      loadReports();
+
+      // Load all reports
+      async function loadReports() {
+        showReportsLoading(true);
+        try {
+          const response = await fetch('/api/reports/dashboard');
+          if (!response.ok) {
+            throw new Error('Failed to load reports');
+          }
+
+          reportsData = await response.json();
+          displayReports();
+          console.log('Reports loaded successfully');
+        } catch (error) {
+          console.error('Error loading reports:', error);
+        } finally {
+          showReportsLoading(false);
+        }
+      }
+
+      // Display all reports
+      function displayReports() {
+        console.log('Displaying reports with data:', reportsData);
+
+        if (reportsData.statistics) {
+          console.log('Displaying statistics report');
+          displayStatisticsReport(reportsData.statistics);
+        }
+
+        if (reportsData.books) {
+          console.log('Displaying books report');
+          displayBooksReport(reportsData.books);
+        }
+
+        if (reportsData.members) {
+          console.log('Displaying members report');
+          displayMembersReport(reportsData.members);
+        }
+
+        if (reportsData.transactions) {
+          console.log('Displaying transactions report');
+          displayTransactionsReport(reportsData.transactions);
+        }
+
+        if (reportsData.fines) {
+          console.log('Displaying fines report');
+          displayFinesReport(reportsData.fines);
+        }
+      }
+
+      // Display statistics report
+      function displayStatisticsReport(stats) {
+        console.log('Statistics data:', stats);
+
+        document.getElementById('totalBooks').textContent = stats.totalBooks || 0;
+        document.getElementById('totalMembers').textContent = stats.totalMembers || 0;
+        document.getElementById('activeTransactions').textContent = stats.activeTransactions || 0;
+        document.getElementById('overdueBooks').textContent = stats.overdueBooks || 0;
+
+        // Book availability chart
+        const bookAvailabilityCtx = document.getElementById('bookAvailabilityChart').getContext('2d');
+        if (charts.bookAvailability) {
+          charts.bookAvailability.destroy();
+        }
+        charts.bookAvailability = new Chart(bookAvailabilityCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Available', 'Issued'],
+            datasets: [{
+              data: [stats.availableBooks || 0, stats.issuedBooks || 0],
+              backgroundColor: ['#10B981', '#F59E0B'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  usePointStyle: true
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return `${label}: ${value} (${percentage}%)`;
+                  }
+                }
+              }
+            },
+            layout: {
+              padding: 10
+            }
+          }
+        });
+
+        // Transaction status chart
+        const transactionStatusCtx = document.getElementById('transactionStatusChart').getContext('2d');
+        if (charts.transactionStatus) {
+          charts.transactionStatus.destroy();
+        }
+        charts.transactionStatus = new Chart(transactionStatusCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Active', 'Completed'],
+            datasets: [{
+              data: [stats.activeTransactions || 0, stats.completedTransactions || 0],
+              backgroundColor: ['#8B5CF6', '#06B6D4'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  usePointStyle: true
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return `${label}: ${value} (${percentage}%)`;
+                  }
+                }
+              }
+            },
+            layout: {
+              padding: 10
+            }
+          }
+        });
+      }
+
+      // Display books report
+      function displayBooksReport(books) {
+        // Books by category chart
+        const booksCategoryCtx = document.getElementById('booksCategoryChart').getContext('2d');
+        if (charts.booksCategory) {
+          charts.booksCategory.destroy();
+        }
+
+        const categoryLabels = Object.keys(books.booksByCategory || {});
+        const categoryData = Object.values(books.booksByCategory || {});
+
+        charts.booksCategory = new Chart(booksCategoryCtx, {
+          type: 'bar',
+          data: {
+            labels: categoryLabels,
+            datasets: [{
+              label: 'Number of Books',
+              data: categoryData,
+              backgroundColor: '#3B82F6',
+              borderColor: '#1D4ED8',
+              borderWidth: 1,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `${context.label}: ${context.parsed.y} books`;
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1
+                }
+              },
+              x: {
+                ticks: {
+                  maxRotation: 45
+                }
+              }
+            },
+            layout: {
+              padding: 10
+            }
+          }
+        });
+
+        // Popular books list
+        const popularBooksList = document.getElementById('popularBooksList');
+        popularBooksList.innerHTML = '';
+
+        if (books.popularBooks && books.popularBooks.length > 0) {
+          books.popularBooks.forEach((book, index) => {
+            const bookItem = document.createElement('div');
+            bookItem.className = 'flex items-center justify-between p-3 bg-white rounded border';
+            bookItem.innerHTML = `
+              <div class="flex items-center">
+                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2 py-1 rounded mr-3">#${index + 1}</span>
+                <span class="font-medium">${book.title}</span>
+              </div>
+              <span class="text-gray-600">${book.issueCount} issues</span>
+            `;
+            popularBooksList.appendChild(bookItem);
+          });
+        } else {
+          popularBooksList.innerHTML = '<p class="text-gray-500 text-center py-4">No popular books data available</p>';
+        }
+      }
+
+      // Display members report
+      function displayMembersReport(members) {
+        // Members by type chart
+        const memberTypeCtx = document.getElementById('memberTypeChart').getContext('2d');
+        if (charts.memberType) {
+          charts.memberType.destroy();
+        }
+
+        const typeLabels = Object.keys(members.membersByType || {});
+        const typeData = Object.values(members.membersByType || {});
+
+        charts.memberType = new Chart(memberTypeCtx, {
+          type: 'pie',
+          data: {
+            labels: typeLabels,
+            datasets: [{
+              data: typeData,
+              backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#EF4444'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 20,
+                  usePointStyle: true
+                }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    const label = context.label || '';
+                    const value = context.parsed || 0;
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                    return `${label}: ${value} members (${percentage}%)`;
+                  }
+                }
+              }
+            },
+            layout: {
+              padding: 10
+            }
+          }
+        });
+
+        // Active members list
+        const activeMembersList = document.getElementById('activeMembersList');
+        activeMembersList.innerHTML = '';
+
+        if (members.mostActiveMembers && members.mostActiveMembers.length > 0) {
+          members.mostActiveMembers.forEach((member, index) => {
+            const memberItem = document.createElement('div');
+            memberItem.className = 'flex items-center justify-between p-3 bg-white rounded border';
+            memberItem.innerHTML = `
+              <div class="flex items-center">
+                <span class="bg-purple-100 text-purple-800 text-sm font-medium px-2 py-1 rounded mr-3">#${index + 1}</span>
+                <span class="font-medium">${member.name}</span>
+              </div>
+              <span class="text-gray-600">${member.transactionCount} transactions</span>
+            `;
+            activeMembersList.appendChild(memberItem);
+          });
+        } else {
+          activeMembersList.innerHTML = '<p class="text-gray-500 text-center py-4">No active members data available</p>';
+        }
+      }
+
+      // Display transactions report
+      function displayTransactionsReport(transactions) {
+        const overdueTransactionsList = document.getElementById('overdueTransactionsList');
+        overdueTransactionsList.innerHTML = '';
+
+        if (transactions.overdueTransactions && transactions.overdueTransactions.length > 0) {
+          transactions.overdueTransactions.forEach(transaction => {
+            const transactionItem = document.createElement('div');
+            transactionItem.className = 'flex items-center justify-between p-3 bg-white rounded border border-red-200';
+            transactionItem.innerHTML = `
+              <div>
+                <div class="font-medium text-gray-800">${transaction.bookTitle}</div>
+                <div class="text-sm text-gray-600">Member: ${transaction.memberName}</div>
+                <div class="text-sm text-red-600">Due: ${transaction.dueDate}</div>
+              </div>
+              <div class="text-right">
+                <span class="bg-red-100 text-red-800 text-sm font-medium px-2 py-1 rounded">
+                  ${transaction.daysOverdue} days overdue
+                </span>
+              </div>
+            `;
+            overdueTransactionsList.appendChild(transactionItem);
+          });
+        } else {
+          overdueTransactionsList.innerHTML = '<p class="text-gray-500 text-center py-4">No overdue books</p>';
+        }
+      }
+
+      // Display fines report
+      function displayFinesReport(fines) {
+        document.getElementById('totalFinesAmount').textContent = `$${(fines.totalFines || 0).toFixed(2)}`;
+        document.getElementById('paidFinesAmount').textContent = `$${(fines.paidFines || 0).toFixed(2)}`;
+        document.getElementById('outstandingFinesAmount').textContent = `$${(fines.outstandingFines || 0).toFixed(2)}`;
+
+        const outstandingFinesList = document.getElementById('outstandingFinesList');
+        outstandingFinesList.innerHTML = '';
+
+        if (fines.outstandingFinesList && fines.outstandingFinesList.length > 0) {
+          fines.outstandingFinesList.forEach(fine => {
+            const fineItem = document.createElement('div');
+            fineItem.className = 'flex items-center justify-between p-3 bg-white rounded border border-yellow-200';
+            fineItem.innerHTML = `
+              <div>
+                <div class="font-medium text-gray-800">${fine.memberName}</div>
+                <div class="text-sm text-gray-600">${fine.reason || 'No reason specified'}</div>
+                <div class="text-sm text-gray-500">Issued: ${fine.dateIssued || 'Unknown'}</div>
+              </div>
+              <div class="text-right">
+                <span class="bg-yellow-100 text-yellow-800 text-lg font-bold px-3 py-1 rounded">
+                  $${(fine.amount || 0).toFixed(2)}
+                </span>
+              </div>
+            `;
+            outstandingFinesList.appendChild(fineItem);
+          });
+        } else {
+          outstandingFinesList.innerHTML = '<p class="text-gray-500 text-center py-4">No outstanding fines</p>';
+        }
+      }
+
+      // Switch between reports
+      function switchReport(reportType) {
+        // Update tabs
+        reportTabs.forEach(tab => {
+          if (tab.dataset.report === reportType) {
+            tab.classList.remove('bg-gray-200', 'text-gray-700');
+            tab.classList.add('bg-blue-600', 'text-white', 'active');
+          } else {
+            tab.classList.remove('bg-blue-600', 'text-white', 'active');
+            tab.classList.add('bg-gray-200', 'text-gray-700');
+          }
+        });
+
+        // Update sections
+        reportSections.forEach(section => {
+          if (section.id === reportType + 'Report') {
+            section.classList.remove('hidden');
+          } else {
+            section.classList.add('hidden');
+          }
+        });
+      }
+
+      // Show loading indicator
+      function showReportsLoading(show) {
+        if (show) {
+          reportsLoadingIndicator.classList.remove('hidden');
+        } else {
+          reportsLoadingIndicator.classList.add('hidden');
+        }
+      }
+    };
   </script>
-  <script type="module" src="./js/staff-members.js"></script>
-  <script type="module" src="./js/staff-transactions.js"></script>
+
+  <!-- Load the scripts as regular scripts, not modules -->
+  <script src="./js/staff-books.js"></script>
+  <script src="./js/staff-members.js"></script>
+  <script src="./js/staff-transactions.js"></script>
+  <script src="./js/issue-book.js"></script>
 </body>
 </html>

@@ -9,14 +9,40 @@
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
   <div class="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-xl shadow-lg w-full max-w-md">
-    <h2 class="text-3xl font-bold text-white mb-6 text-center">Welcome Back!</h2>
-	<form id="loginForm" class="space-y-4">
-      <input type="email" id="email" placeholder="Email" class="w-full p-2 rounded-lg bg-white bg-opacity-20 text-white" required>
-      <input type="password" id="password" placeholder="Password" class="w-full p-2 rounded-lg bg-white bg-opacity-20 text-white" required>
-      <button type="submit" class="w-full bg-pink-500 text-white py-2 rounded-full hover:bg-pink-400">Login</button>
-      <p class="text-sm text-white text-center mt-2">Don't have an account? <a href="signup.html" class="underline">Sign Up</a></p>
+    <h2 class="text-3xl font-bold text-white mb-6 text-center">Login to jnanaTattva</h2>
+
+    <!-- Login Type Selector -->
+    <div class="mb-6">
+      <div class="flex bg-white bg-opacity-20 rounded-lg p-1">
+        <button type="button" id="staffLoginTab" class="flex-1 py-2 px-4 rounded-md text-white font-medium transition bg-white bg-opacity-30">
+          Staff Login
+        </button>
+        <button type="button" id="studentLoginTab" class="flex-1 py-2 px-4 rounded-md text-white font-medium transition">
+          User Login
+        </button>
+      </div>
+    </div>
+
+    <!-- Staff Login Form -->
+    <form id="staffLoginForm" class="space-y-4">
+      <input type="email" id="staffEmail" placeholder="Staff Email" class="w-full p-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-gray-300" required>
+      <input type="password" id="staffPassword" placeholder="Password" class="w-full p-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-gray-300" required>
+      <button type="submit" class="w-full bg-pink-500 text-white py-3 rounded-lg hover:bg-pink-400 transition font-medium">
+        Login as Staff
+      </button>
     </form>
+
+    <!-- User Login Form -->
+    <form id="studentLoginForm" class="space-y-4 hidden">
+      <input type="email" id="studentEmail" placeholder="User Email" class="w-full p-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-gray-300" required>
+      <input type="text" id="studentMemberId" placeholder="Member ID" class="w-full p-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-gray-300" required>
+      <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-400 transition font-medium">
+        Login as User
+      </button>
+    </form>
+
+    <p class="text-sm text-white text-center mt-6">Don't have an account? <a href="signup.html" class="underline hover:text-pink-300">Sign Up</a></p>
   </div>
-  <script type="module" src="js/login.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>

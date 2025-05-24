@@ -51,7 +51,8 @@ addBookForm.addEventListener("submit", async (e) => {
     title: addBookForm.title.value.trim(),
     author: addBookForm.author.value.trim(),
     isbn: addBookForm.isbn.value.trim(),
-    category: addBookForm.category.value.trim(),
+    genre: addBookForm.category.value.trim(),  // Map category to genre field
+    availability: true,  // Set new books as available by default
   };
 
   try {
