@@ -1,5 +1,5 @@
 
-#  Library Management System – Backend
+# 📚 Library Management System – Backend
 
 A fully functional RESTful backend for a Library Management System built with Spring Boot. This project handles core features such as book management, member records, staff tracking, transaction history, fine calculations, and more. It exposes powerful HTTP endpoints that can be tested using Postman, Talend API Tester, or integrated into any frontend.
 
